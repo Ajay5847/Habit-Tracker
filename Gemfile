@@ -63,6 +63,8 @@ group :development do
   gem "web-console"
   gem "annotaterb"
   gem "faker"
+  gem "pry", "~> 0.15.0"
+  gem "bullet"
 end
 
 group :test do
