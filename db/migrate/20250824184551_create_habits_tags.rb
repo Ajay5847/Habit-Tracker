@@ -3,7 +3,6 @@ class CreateHabitsTags < ActiveRecord::Migration[8.0]
     create_table :habits_tags do |t|
       t.string :name
       t.string :color
-      t.references :user, null: false, foreign_key: true
 
       t.timestamps
     end

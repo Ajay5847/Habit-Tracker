@@ -28,7 +28,7 @@ class Habits::Item < ApplicationRecord
   store_attribute :data, :target_unit, :string, default: nil
   store_attribute :data, :duration_minutes, :integer, default: 0
 
-  belongs_to :lists, class_name: "Habits::List"
+  belongs_to :list, class_name: "Habits::List"
 
   has_many :item_tags, class_name: "Habits::ItemTag", dependent: :destroy
   has_many :tags, through: :item_tags, class_name: "Habits::Tag"

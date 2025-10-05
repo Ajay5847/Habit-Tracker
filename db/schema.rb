@@ -67,10 +67,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_24_185844) do
   create_table "habits_tags", force: :cascade do |t|
     t.string "name"
     t.string "color"
-    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_habits_tags_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -89,5 +87,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_24_185844) do
   add_foreign_key "habits_item_tags", "habits_tags", column: "tag_id"
   add_foreign_key "habits_items", "habits_lists", column: "list_id"
   add_foreign_key "habits_lists", "users"
-  add_foreign_key "habits_tags", "users"
 end
