@@ -1,0 +1,37 @@
+<!-- Habit Card Partial -->
+<div class="habit-card <%= 'habit-completed' if habit.complete? %>" id="habit-<%= habit.id %>">
+  <div class="flex items-start justify-between mb-4">
+    <div class="flex items-center space-x-3">
+      <!-- JS for toggle removed; use Alpine/Stimulus in future -->
+      <button class="w-6 h-6 <%= habit.complete? ? 'bg-success' : 'border-2 border-surface-200' %> rounded-full flex items-center justify-center hover-scale transition-smooth">
+        <% if habit.complete? %>
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+          </svg>
+        <% end %>
+      </button>
+      <div>
+        <h3 class="font-semibold text-text-primary"><%= habit.name %></h3>
+        <p class="text-sm text-text-secondary"><%= habit.list.description %></p>
+        <div class="flex flex-wrap gap-1 mt-1">
+          <% habit.tags.each do |tag| %>
+            <span class="px-2 py-1 bg-primary-50 text-primary text-xs rounded-full"><%= tag.name %></span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center space-x-2">
+      <span class="text-accent text-lg">🔥</span>
+      <span class="streak-counter">5</span>
+    </div>
+  </div>
+  <div class="progress-bar mb-3">
+    <div class="progress-fill" style="width: <%= habit.complete? ? '100%' : '0%' %>"></div>
+  </div>
+  <div class="flex items-center justify-between text-sm">
+    <span class="<%= habit.complete? ? 'text-success font-medium' : 'text-text-secondary' %>">
+      <%= habit.complete? ? '✓ Completed today' : 'Pending for today' %>
+    </span>
+    <%= link_to 'View Details', "#", class: 'text-primary hover:text-primary-600 transition-smooth' %>
+  </div>
+</div>

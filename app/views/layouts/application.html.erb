@@ -24,8 +24,10 @@
   </head>
 
   <body>
+    <%= render 'layouts/header' %>
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>
+    <%= render 'shared/slideover' %>
   </body>
 </html>
