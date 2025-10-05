@@ -328,6 +328,11 @@ GEM
     store_attribute (2.0.1)
       activerecord (>= 6.1)
     stringio (3.1.7)
+    tailwindcss-rails (4.3.0)
+      railties (>= 7.0.0)
+      tailwindcss-ruby (~> 4.0)
+    tailwindcss-ruby (4.1.13-x64-mingw-ucrt)
+    tailwindcss-ruby (4.1.13-x86_64-linux-gnu)
     thor (1.4.0)
     thruster (0.1.15)
     thruster (0.1.15-x86_64-linux)
@@ -389,6 +394,7 @@ DEPENDENCIES
   solid_queue
   stimulus-rails
   store_attribute
+  tailwindcss-rails
   thruster
   turbo-rails
   tzinfo-data

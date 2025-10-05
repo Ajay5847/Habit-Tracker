@@ -1,1 +1,38 @@
 @import "tailwindcss";
+
+/* 🧱 Define your design tokens here */
+@theme {
+  --color-primary: #3B82F6;
+  /* blue-500 */
+  --color-secondary: #10B981;
+  /* emerald-500 */
+  --color-background: #F9FAFB;
+  /* gray-50 */
+  --color-surface: #FFFFFF;
+  /* card */
+  --color-text-primary: #111827;
+  /* gray-900 */
+  --color-text-secondary: #6B7280;
+  /* gray-500 */
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  --font-sans: Inter, sans-serif;
+  --font-heading: Poppins, sans-serif;
+
+  --radius-xl: 1rem;
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* 🖋️ Apply base styles */
+body {
+  @apply bg-background text-text-primary font-sans;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  @apply font-heading text-text-primary;
+}
