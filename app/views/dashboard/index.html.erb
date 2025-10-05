@@ -1,0 +1,27 @@
+<!-- Floating Add Button (JS removed, use Alpine/Stimulus in future) -->
+<button class="md:hidden fixed bottom-24 md:bottom-8 right-6 w-14 h-14 bg-primary hover:bg-primary-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 z-40 flex items-center justify-center group" data-modal-target="habit-modal">
+  <svg class="w-7 h-7 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+  </svg>
+</button>
+
+<main class="container mx-auto px-4 py-8">
+  <!-- Welcome Header -->
+  <div class="mb-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-semibold text-text-primary mb-2">Good morning, John! 👋</h1>
+        <p class="text-text-secondary">Friday, October 4, 2025 • Let's make today count</p>
+      </div>
+      <%= link_to new_habits_item_path, class: "btn-primary hover-scale hidden md:flex", data: { turbo_stream: true } do %>
+        <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+        Add New Habit
+      <% end %>
+    </div>
+  </div>
+
+  <%= render 'dashboard/partials/summary_panel' %>
+  <%= render 'dashboard/partials/habits_grid' %>
+</main>

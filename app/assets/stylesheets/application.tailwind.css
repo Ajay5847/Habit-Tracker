@@ -1,1 +1,4 @@
 @import "tailwindcss";
+@import "./partials/_base.css";
+@import "./partials/_components.css";
+@import "./partials/_utilities.css";

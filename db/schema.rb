@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_24_185844) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_05_120000) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_24_185844) do
     t.bigint "list_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0, null: false
     t.index ["list_id"], name: "index_habits_items_on_list_id"
   end
 
