@@ -1,4 +1,4 @@
-<main class="bg-gray-100 flex-1 flex items-center justify-center px-4 py-8 sm:py-12" x-data="{ tab: 'login', showLoginPassword: false, showRegisterPassword: false }">
+<main class="bg-gray-100 flex-1 flex items-center justify-center px-4 py-8 sm:py-12" x-data="{ tabs: { login: 1, register: 2, recover: 3 }, tab: 1, showLoginPassword: false, showRegisterPassword: false }">
   <div class="max-w-6xl mx-auto w-full">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <!-- Hero Section -->
@@ -48,27 +48,26 @@
       </div>
       <!-- Authentication Forms -->
       <div class="w-full max-w-md mx-auto lg:mx-0">
-  <div class="bg-white border border-gray-300 rounded-2xl shadow-2xl p-8 backdrop-blur-md">
+        <div class="bg-white border border-gray-300 rounded-2xl shadow-2xl p-8 backdrop-blur-md">
           <!-- Tab Navigation -->
-          <div class="flex bg-surface rounded-xl p-1 mb-8">
+          <div x-show="tab === tabs.login || tab === tabs.register" class="flex bg-surface rounded-xl p-1 mb-8">
             <button 
               class="flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200"
-              :class="tab === 'login' ? 'text-primary-600 bg-white shadow-soft' : 'text-text-secondary hover:text-text-primary'"
-              @click="tab = 'login'"
+              :class="tab === tabs.login ? 'text-primary-600 bg-white shadow-soft' : 'text-text-secondary hover:text-text-primary'"
+              @click="tab = tabs.login"
             >
               Sign In
             </button>
             <button 
               class="flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200"
-              :class="tab === 'register' ? 'text-primary-600 bg-white shadow-soft' : 'text-text-secondary hover:text-text-primary'"
-              @click="tab = 'register'"
+              :class="tab === tabs.register ? 'text-primary-600 bg-white shadow-soft' : 'text-text-secondary hover:text-text-primary'"
+              @click="tab = tabs.register"
             >
               Sign Up
             </button>
           </div>
           <!-- Login Form -->
-          <%= form_for(User.new, as: :user, url: session_path(:user), html: { class: 'space-y-6', "x-show" => "tab === 'login'" }) do |f| %>
-            <%= turbo_frame_tag "error_messages" %>
+          <%= form_for(User.new, as: :user, url: session_path(:user), html: { class: 'space-y-6', "x-show" => "tab === tabs.login" }) do |f| %>
             <div class="space-y-4">
               <div class="relative">
                 <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "loginEmail" %>
@@ -91,7 +90,7 @@
                 <%= f.check_box :remember_me, class: "w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" %>
                 <span class="text-sm text-text-secondary">Remember me</span>
               </label>
-              <%= link_to "Forgot password?", new_password_path(:user), class: "text-sm text-primary-600 hover:text-primary-700 transition-colors duration-200" %>
+              <%= link_to "Forgot password?", new_password_path(:user), class: "text-sm text-primary-600 hover:text-primary-700 transition-colors duration-200", "@click.prevent": "tab = tabs.recover" %>
             </div>
             <button type="submit" class="border w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
               <span class="flex items-center justify-center space-x-2">
@@ -101,8 +100,7 @@
             </button>
           <% end %>
           <!-- Register Form -->
-          <%= form_for(User.new, as: :user, url: registration_path(:user), html: { class: 'space-y-6', "x-show" => "tab === 'register'" }) do |f| %>
-            <%= render "devise/shared/error_messages", resource: resource if defined?(resource) && resource.errors.any? %>
+          <%= form_for(User.new, as: :user, url: registration_path(:user), html: { class: 'space-y-6', "x-show" => "tab === tabs.register" }) do |f| %>
             <div class="space-y-4">
               <div class="relative">
                 <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "registerEmail" %>
@@ -133,8 +131,32 @@
               </span>
             </button>
           <% end %>
+          <!-- Forgot password Form -->
+          <%= form_for(User.new, as: :user, url: password_path(:user), html: { class: 'space-y-6', "x-show" => "tab === tabs.recover" }) do |f| %>
+            <!-- Header -->
+            <h2 class="text-xl font-semibold text-text-primary text-center">Forgot Password?</h2>
+            <p class="text-sm text-text-secondary text-center mb-4">
+              Enter your email address and we’ll send you reset instructions.
+            </p>
+            <div class="relative">
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "forgotPasswordEmail" %>
+              <label for="forgotPasswordEmail" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                Email address
+              </label>
+            </div>
+
+            <button type="submit" class="border w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+              Send me reset password instructions
+            </button>
+            <div class="text-center mt-4">
+              <button class="border w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] text-text-secondary hover:text-text-primary" @click="tab = tabs.login"
+              >
+                Back to Sign In
+              </button>
+            </div>
+          <% end %>
           <!-- Social Login -->
-          <div class="mt-8">
+          <div x-show="tab === tabs.login || tab === tabs.register" class="mt-8">
             <div class="relative">
               <div class="absolute inset-0 flex items-center">
                 <div class="w-full border-t border-gray-200"></div>
