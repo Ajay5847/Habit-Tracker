@@ -16,15 +16,28 @@
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+  <body class="bg-gray-50 text-text-primary min-h-screen flex flex-col">
+    <%= render "layouts/header" %>
+    <div class="grow flex flex-row-reverse overflow-hidden">
+      <div class="grow overflow-y-auto scroller">
+        <%= yield %>
+      </div>
+    </div>
+    <%= turbo_frame_tag 'flash_messages', class: 'hidden' do %>
+      <div data-controller="notyf"></div>
+      <% flash.each do |type, message| %>
+        <% type = type.to_s %>
+        <% next if flash[type].blank? %>
+        <% next unless type.starts_with?('notyf_') %>
+        <%= render 'shared/flash_message', type: %w[alert error].include?(type.gsub(/^notyf_/, '')) ? 'alert' : 'notice', message: message %>
+      <% end %>
+    <% end %>
   </body>
 </html>

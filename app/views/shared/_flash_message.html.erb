@@ -1,0 +1,6 @@
+<div 
+  data-controller="notyf" 
+  data-notyf-error-value="<%= (%w[alert danger error].include?(local_assigns[:type])).to_s %>"
+>
+  <%= local_assigns[:message] %>
+</div>

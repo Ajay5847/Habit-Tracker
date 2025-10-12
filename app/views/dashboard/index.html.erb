@@ -1,0 +1,159 @@
+<main class="bg-gray-100 flex-1 flex items-center justify-center px-4 py-8 sm:py-12" x-data="{ tab: 'login', showLoginPassword: false, showRegisterPassword: false }">
+  <div class="max-w-6xl mx-auto w-full">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Hero Section -->
+      <div class="text-center lg:text-left space-y-8">
+        <!-- Hero Image -->
+        <div class="relative mb-8 lg:mb-0">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Person achieving goals" class="w-full h-64 lg:h-80 object-cover rounded-2xl shadow-elevated" loading="lazy" onerror="this.src='https://images.pexels.com/photos/1552617/pexels-photo-1552617.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'; this.onerror=null;" />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary-900/20 to-transparent rounded-2xl"></div>
+        </div>
+        <!-- Hero Content -->
+        <div class="space-y-6">
+          <h1 class="text-fluid-3xl font-bold text-text-primary leading-tight">
+            Transform Your Life,
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
+            One Habit at a Time
+            </span>
+          </h1>
+          <p class="text-fluid-lg text-text-secondary leading-relaxed max-w-2xl">
+            Build lasting habits with HabitFlow's intuitive tracking system. 
+            Visualize your progress, celebrate streaks, and create the life you've always wanted.
+          </p>
+          <!-- Feature Highlights -->
+          <div class="grid sm:grid-cols-3 gap-4 mt-8">
+            <div class="flex items-center space-x-1 p-4 bg-white border border-gray-200 rounded-xl shadow-md backdrop-blur-md">
+              <i class="fas fa-chart-line text-primary-600"></i>
+              <div>
+                <h3 class="font-medium text-text-primary whitespace-nowrap">Track Progress</h3>
+                <p class="text-sm text-text-secondary whitespace-nowrap">Visual analytics</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-1 p-4 bg-white border border-gray-200 rounded-xl shadow-md backdrop-blur-md">
+              <i class="fas fa-fire text-accent-600"></i>
+              <div>
+                <h3 class="font-medium text-text-primary whitespace-nowrap">Build Streaks</h3>
+                <p class="text-sm text-text-secondary whitespace-nowrap">Stay motivated</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-1 p-4 bg-white border border-gray-200 rounded-xl shadow-md backdrop-blur-md">
+              <i class="fas fa-calendar-check text-secondary-600"></i>
+              <div>
+                <h3 class="font-medium text-text-primary whitespace-nowrap">Daily Check-ins</h3>
+                <p class="text-sm text-text-secondary whitespace-nowrap">Simple tracking</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Authentication Forms -->
+      <div class="w-full max-w-md mx-auto lg:mx-0">
+  <div class="bg-white border border-gray-300 rounded-2xl shadow-2xl p-8 backdrop-blur-md">
+          <!-- Tab Navigation -->
+          <div class="flex bg-surface rounded-xl p-1 mb-8">
+            <button 
+              class="flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200"
+              :class="tab === 'login' ? 'text-primary-600 bg-white shadow-soft' : 'text-text-secondary hover:text-text-primary'"
+              @click="tab = 'login'"
+            >
+              Sign In
+            </button>
+            <button 
+              class="flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200"
+              :class="tab === 'register' ? 'text-primary-600 bg-white shadow-soft' : 'text-text-secondary hover:text-text-primary'"
+              @click="tab = 'register'"
+            >
+              Sign Up
+            </button>
+          </div>
+          <!-- Login Form -->
+          <%= form_for(User.new, as: :user, url: session_path(:user), html: { class: 'space-y-6', "x-show" => "tab === 'login'" }) do |f| %>
+            <%= turbo_frame_tag "error_messages" %>
+            <div class="space-y-4">
+              <div class="relative">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "loginEmail" %>
+                <label for="loginEmail" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                  Email address
+                </label>
+              </div>
+              <div class="relative">
+                <%= f.password_field :password, autocomplete: "current-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Password", required: true, id: "loginPassword", ':type': "showLoginPassword ? 'text' : 'password'" %>
+                <label for="loginPassword" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                  Password
+                </label>
+                <button type="button" class="absolute right-3 top-3 text-text-secondary hover:text-text-primary transition-colors duration-200" @click="showLoginPassword = !showLoginPassword">
+                  <i :class="showLoginPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <label class="flex items-center space-x-2">
+                <%= f.check_box :remember_me, class: "w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" %>
+                <span class="text-sm text-text-secondary">Remember me</span>
+              </label>
+              <%= link_to "Forgot password?", new_password_path(:user), class: "text-sm text-primary-600 hover:text-primary-700 transition-colors duration-200" %>
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+              <span class="flex items-center justify-center space-x-2">
+                <span>Sign In</span>
+                <i class="fas fa-arrow-right"></i>
+              </span>
+            </button>
+          <% end %>
+          <!-- Register Form -->
+          <%= form_for(User.new, as: :user, url: registration_path(:user), html: { class: 'space-y-6', "x-show" => "tab === 'register'" }) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource if defined?(resource) && resource.errors.any? %>
+            <div class="space-y-4">
+              <div class="relative">
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "registerEmail" %>
+                <label for="registerEmail" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                  Email address
+                </label>
+              </div>
+              <div class="relative">
+                <%= f.password_field :password, autocomplete: "new-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Password", required: true, id: "registerPassword", ':type': "showRegisterPassword ? 'text' : 'password'" %>
+                <label for="registerPassword" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                  Password
+                </label>
+                <button type="button" class="absolute right-3 top-3 text-text-secondary hover:text-text-primary transition-colors duration-200" @click="showRegisterPassword = !showRegisterPassword">
+                  <i :class="showRegisterPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <div class="relative">
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Confirm password", required: true, id: "registerPasswordConfirmation", ':type': "showRegisterPassword ? 'text' : 'password'" %>
+                <label for="registerPasswordConfirmation" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                  Confirm password
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+              <span class="flex items-center justify-center space-x-2">
+                <span>Create Account</span>
+                <i class="fas fa-user-plus"></i>
+              </span>
+            </button>
+          <% end %>
+          <!-- Social Login -->
+          <div class="mt-8">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-200"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-4 bg-white text-text-secondary">Or continue with</span>
+              </div>
+            </div>
+            <div class="mt-6 grid grid-cols-2 gap-3">
+              <button class="w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl bg-white text-sm font-medium text-text-secondary hover:bg-gray-50 transition-colors duration-200">
+              <i class="fab fa-google text-lg"></i>
+              </button>
+              <button class="w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl bg-white text-sm font-medium text-text-secondary hover:bg-gray-50 transition-colors duration-200">
+              <i class="fab fa-apple text-lg"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
