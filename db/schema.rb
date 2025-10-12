@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_24_185844) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_12_172405) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_24_185844) do
     t.bigint "list_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0, null: false
     t.index ["list_id"], name: "index_habits_items_on_list_id"
   end
 
@@ -79,8 +80,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_24_185844) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "provider"
+    t.string "uid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid"], name: "index_users_on_uid"
   end
 
   add_foreign_key "habits_item_tags", "habits_items", column: "item_id"

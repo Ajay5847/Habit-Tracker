@@ -71,13 +71,13 @@
             <%= turbo_frame_tag "error_messages" %>
             <div class="space-y-4">
               <div class="relative">
-                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "loginEmail" %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "loginEmail" %>
                 <label for="loginEmail" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
                   Email address
                 </label>
               </div>
               <div class="relative">
-                <%= f.password_field :password, autocomplete: "current-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Password", required: true, id: "loginPassword", ':type': "showLoginPassword ? 'text' : 'password'" %>
+                <%= f.password_field :password, autocomplete: "current-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Password", required: true, id: "loginPassword", ':type': "showLoginPassword ? 'text' : 'password'" %>
                 <label for="loginPassword" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
                   Password
                 </label>
@@ -93,7 +93,7 @@
               </label>
               <%= link_to "Forgot password?", new_password_path(:user), class: "text-sm text-primary-600 hover:text-primary-700 transition-colors duration-200" %>
             </div>
-            <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+            <button type="submit" class="border w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
               <span class="flex items-center justify-center space-x-2">
                 <span>Sign In</span>
                 <i class="fas fa-arrow-right"></i>
@@ -105,13 +105,13 @@
             <%= render "devise/shared/error_messages", resource: resource if defined?(resource) && resource.errors.any? %>
             <div class="space-y-4">
               <div class="relative">
-                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "registerEmail" %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Email address", required: true, id: "registerEmail" %>
                 <label for="registerEmail" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
                   Email address
                 </label>
               </div>
               <div class="relative">
-                <%= f.password_field :password, autocomplete: "new-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Password", required: true, id: "registerPassword", ':type': "showRegisterPassword ? 'text' : 'password'" %>
+                <%= f.password_field :password, autocomplete: "new-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Password", required: true, id: "registerPassword", ':type': "showRegisterPassword ? 'text' : 'password'" %>
                 <label for="registerPassword" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
                   Password
                 </label>
@@ -120,13 +120,13 @@
                 </button>
               </div>
               <div class="relative">
-                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Confirm password", required: true, id: "registerPasswordConfirmation", ':type': "showRegisterPassword ? 'text' : 'password'" %>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent", placeholder: "Confirm password", required: true, id: "registerPasswordConfirmation", ':type': "showRegisterPassword ? 'text' : 'password'" %>
                 <label for="registerPasswordConfirmation" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
                   Confirm password
                 </label>
               </div>
             </div>
-            <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
+            <button type="submit" class="border w-full bg-gradient-to-r from-primary-600 to-primary-700 py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]">
               <span class="flex items-center justify-center space-x-2">
                 <span>Create Account</span>
                 <i class="fas fa-user-plus"></i>
@@ -143,13 +143,11 @@
                 <span class="px-4 bg-white text-text-secondary">Or continue with</span>
               </div>
             </div>
-            <div class="mt-6 grid grid-cols-2 gap-3">
-              <button class="w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl bg-white text-sm font-medium text-text-secondary hover:bg-gray-50 transition-colors duration-200">
-              <i class="fab fa-google text-lg"></i>
-              </button>
-              <button class="w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl bg-white text-sm font-medium text-text-secondary hover:bg-gray-50 transition-colors duration-200">
-              <i class="fab fa-apple text-lg"></i>
-              </button>
+            <div class="mt-6 grid gap-3">
+              <%= button_to user_google_oauth2_omniauth_authorize_path, method: :post, class: "w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl bg-white text-sm font-medium text-text-secondary hover:bg-gray-50 transition-colors duration-200", data: { turbo: "false" } do %>
+                <%= image_tag 'google.svg', class: 'mr-1 w-4' %>
+                <span>Sign in with Google</span>
+              <% end %>
             </div>
           </div>
         </div>
