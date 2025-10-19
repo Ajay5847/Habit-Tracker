@@ -1,0 +1,47 @@
+<div class="fixed inset-0 overflow-hidden hidden z-[9999]" aria-labelledby="slide-over-title" aria-modal="true" data-controller="slideover" role="dialog">
+  <div class="absolute inset-0 overflow-hidden">
+    <!-- Overlay (sibling) -->
+    <div
+      class="absolute inset-0 bg-black/60 transition-opacity z-0"
+      aria-hidden="true"
+      data-slideover-target="overlay"
+      data-transition-enter="ease-in-out duration-500"
+      data-transition-enter-end="opacity-100"
+      data-transition-enter-start="opacity-0"
+      data-transition-leave="ease-in-out duration-500"
+      data-transition-leave-end="opacity-0"
+      data-transition-leave-start="opacity-100">
+    </div>
+
+    <!-- Panel container (sibling) -->
+    <div class="fixed inset-x-1 inset-y-1 md:left-auto md:right-2 md:inset-y-2 md:pl-10 max-w-full flex z-10">
+      <div
+        class="w-screen max-w-xl overflow-hidden rounded"
+        data-slideover-target="panel"
+        data-transition-enter="transform transition ease-in-out duration-500"
+        data-transition-enter-end="translate-x-0"
+        data-transition-enter-start="translate-x-full"
+        data-transition-leave="transform transition ease-in-out duration-500"
+        data-transition-leave-end="translate-x-full"
+        data-transition-leave-start="translate-x-0">
+        <div class="slideover-pane" data-slideover-target="slideover">
+          <div class="slideover-header">
+            <div class="flex items-center justify-between py-4">
+              <div class="slideover-title overflow-x-hidden">
+                <i data-slideover-target="headericon"></i>
+                <h2 class="truncate" data-slideover-target="title"></h2>
+              </div>
+              <div class="slideover-actions">
+                <button class="modal-close" data-action="slideover#close">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            </div>
+            <div class="slideover-tabs" data-slideover-target="tabs"></div>
+          </div>
+          <div class="slideover-body" data-slideover-target="body"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

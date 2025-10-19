@@ -13,6 +13,7 @@
     "@hotwired/turbo-rails": "^8.0.16",
     "@tailwindcss/cli": "^4.1.14",
     "alpinejs": "^3.15.0",
+    "el-transition": "^0.0.7",
     "notyf": "^3.10.0",
     "tailwindcss": "^4.1.14"
   }

@@ -20,7 +20,12 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Habits::List < ApplicationRecord
+  DEFAULT_LIST_NAME = "Morning Routine".freeze
   belongs_to :user
 
   has_many :items, class_name: "Habits::Item", dependent: :destroy
+
+  def self.default_list
+    find_by(name: DEFAULT_LIST_NAME)
+  end
 end

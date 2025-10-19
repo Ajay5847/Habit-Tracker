@@ -9,3 +9,9 @@ application.register("hello", HelloController)
 
 import NotyfController from "./notyf_controller"
 application.register("notyf", NotyfController)
+
+import SlideoverContentController from "./slideover_content_controller"
+application.register("slideover-content", SlideoverContentController)
+
+import SlideoverController from "./slideover_controller"
+application.register("slideover", SlideoverController)

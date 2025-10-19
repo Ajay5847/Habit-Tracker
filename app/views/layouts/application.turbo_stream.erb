@@ -1,0 +1,15 @@
+<%= yield %>
+
+<% flash.each do |type, message| %>
+  <% next if %w[block_notice].include?(type) %>
+  <%= turbo_stream.append "flash_messages",
+        partial: "shared/flash_message",
+        locals: {
+          type: %w[alert error].include?(type) ? "alert" : "notice",
+          message: message
+        } %>
+<% end %>
+
+<% if content_for?(:slideover_content) %>
+  <%= turbo_stream.update "slideover-content", content_for(:slideover_content) %>
+<% end %>

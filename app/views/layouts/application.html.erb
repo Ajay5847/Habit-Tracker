@@ -39,5 +39,7 @@
         <%= render 'shared/flash_message', type: %w[alert error].include?(type.gsub(/^notyf_/, '')) ? 'alert' : 'notice', message: message %>
       <% end %>
     <% end %>
+    <%= render 'shared/slideover' %>
+    <%= turbo_frame_tag 'slideover-content', class: 'hidden' %>
   </body>
 </html>
