@@ -71,6 +71,20 @@
         </div>
       </div>
 
+      <!-- Tags -->
+      <div data-controller="tom-select">
+        <%= f.label :tag_ids, "Tags", class: "text-left tracking-normal text-gray-700 text-base leading-tight" %>
+        <%= select_tag "habits_item[tag_ids][]",
+              options_for_select(
+                Habits::Tag.all.map { |t| [t.name, t.id] },
+                @item.tag_ids
+              ),
+              multiple: true,
+              class: "w-full form-select rounded-md mt-3",
+              data: { tom_select_target: 'select' } %>
+        <p class="mt-1 text-xs text-gray-500">Select one or more tags that describe this habit.</p>
+      </div>
+
 
       <!-- Target (Optional) -->
       <div>

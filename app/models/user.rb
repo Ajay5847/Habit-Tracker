@@ -5,6 +5,8 @@
 #  id                     :bigint           not null, primary key
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  first_name             :string
+#  last_name              :string
 #  provider               :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
@@ -26,11 +28,16 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [ :google_oauth2 ]
 
   has_many :habits_lists, class_name: "Habits::List", dependent: :destroy
+  has_many :habit_items, through: :habits_lists, source: :items
 
   def self.create_from_provider_data(provider_data)
     where(provider: provider_data.provider, uid: provider_data.uid).first_or_create do |user|
       user.email = provider_data.info.email
       user.password = Devise.friendly_token[0, 20]
     end
+  end
+
+  def full_name
+    [ first_name, last_name ].compact.join(" ")
   end
 end

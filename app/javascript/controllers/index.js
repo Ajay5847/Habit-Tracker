@@ -15,3 +15,6 @@ application.register("slideover-content", SlideoverContentController)
 
 import SlideoverController from "./slideover_controller"
 application.register("slideover", SlideoverController)
+
+import TomSelectController from "./tom_select_controller"
+application.register("tom-select", TomSelectController)

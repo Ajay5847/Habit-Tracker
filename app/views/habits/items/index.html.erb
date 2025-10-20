@@ -1,0 +1,28 @@
+<div x-data="{ tab: 'inprogress' }" class="tabs-container">
+  <div class="flex space-x-4 mb-6">
+    <button
+      :class="tab === 'inprogress' ? 'bg-primary-100 text-primary-700' : ''"
+      class="tab-btn font-semibold px-4 py-2 rounded-lg"
+      @click="tab = 'inprogress'"
+    >In Progress</button>
+    <button
+      :class="tab === 'completed' ? 'bg-green-100 text-green-700' : ''"
+      class="tab-btn font-semibold px-4 py-2 rounded-lg"
+      @click="tab = 'completed'"
+    >Completed</button>
+  </div>
+  <div x-show="tab === 'inprogress'" id="habit_items_inprogress">
+    <%= turbo_frame_tag "habit_items_inprogress" do %>
+      <% @items.where.not(status: :complete).each do |item| %>
+        <%= render partial: "habits/items/habit_card", locals: { item: item } %>
+      <% end %>
+    <% end %>
+  </div>
+  <div x-show="tab === 'completed'" id="habit_items_completed">
+    <%= turbo_frame_tag "habit_items_completed" do %>
+      <% @items.where(status: :complete).each do |item| %>
+        <%= render partial: "habits/items/habit_card", locals: { item: item } %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

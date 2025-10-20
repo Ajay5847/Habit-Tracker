@@ -1,0 +1,55 @@
+.select2--form {
+  .select2-container {
+    @apply rounded-md text-sm md:text-base w-full mt-3 appearance-none bg-white border-gray-500 border py-2 pl-3 pr-9;
+  }
+
+  .select2-selection--single {
+    @apply text-sm md:text-base w-full leading-normal h-6 truncate border-0;
+
+    .select2-selection__rendered {
+      @apply !pl-0;
+    }
+
+    .select2-selection__arrow {
+      @apply mt-2 mr-2;
+    }
+
+    &:focus-visible {
+      outline: none !important;
+    }
+  }
+
+  .select2-selection--multiple {
+    @apply text-sm md:text-base w-full leading-normal h-auto truncate border-0;
+
+    .select2-selection__rendered {
+      @apply !pl-0;
+    }
+
+    .select2-selection__choice {
+      @apply !bg-gray-200 !rounded-full !px-2 !py-1 !mr-1;
+    }
+
+    .select2-selection__choice__remove {
+      @apply !ml-1;
+    }
+
+    .select2-selection__choice__remove:hover,
+    .select2-selection__choice__remove:focus,
+    .select2-selection__choice__remove:active {
+      @apply !bg-gray-300;
+    }
+
+    .select2-selection__choice__remove:focus-visible {
+      outline: none !important;
+    }
+
+    .select2-selection__arrow {
+      @apply mt-2 mr-2;
+    }
+
+    &:focus-visible {
+      outline: none !important;
+    }
+  }
+}

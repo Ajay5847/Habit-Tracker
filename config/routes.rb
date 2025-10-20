@@ -4,7 +4,11 @@ Rails.application.routes.draw do
 
   namespace :habits do
     resources :lists do
-      resources :items
+      resources :items do
+        member do
+          patch :mark_complete
+        end
+      end
     end
   end
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

@@ -1,0 +1,2 @@
+<%= turbo_stream.remove dom_id(@item) %>
+<%= turbo_stream.append "habit_items_completed", partial: "habits/items/habit_card", locals: { item: @item } %>

@@ -38,6 +38,7 @@ class Habits::Item < ApplicationRecord
 
   enum :item_type, { habit: 0, todo: 1 }
   enum :frequency, { daily: 0, weekly: 1, custom: 2 }
+  enum :status, { draft: 0, incomplete: 1, complete: 2, overdue: 3 }
 
   validates :name, presence: true
 
