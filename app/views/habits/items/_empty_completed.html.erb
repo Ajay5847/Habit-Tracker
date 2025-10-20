@@ -1,0 +1,9 @@
+<div id="empty_completed" class="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col items-center justify-center py-8">
+  <p class="text-gray-500 text-center mb-4">
+  You haven't completed any habits yet. Keep going or add a new habit to get started!
+  </p>
+  <%= link_to new_habits_list_item_path(current_user.default_list), class: 'bg-green-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center space-x-2', data: { turbo_stream: true } do %>
+  <i class="fa fa-plus mr-2"></i>
+  Add Habit
+  <% end %>
+</div>

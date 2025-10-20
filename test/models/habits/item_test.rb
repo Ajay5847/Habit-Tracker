@@ -11,7 +11,7 @@
 #  item_type   :integer          default("habit"), not null
 #  name        :string           not null
 #  position    :integer
-#  status      :integer          default(0), not null
+#  status      :integer          default("draft"), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  list_id     :bigint           not null

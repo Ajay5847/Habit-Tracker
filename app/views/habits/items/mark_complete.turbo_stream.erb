@@ -1,2 +1,9 @@
 <%= turbo_stream.remove dom_id(@item) %>
+<% completed_habits_count = current_user.habit_items.complete.count %>
+<% if completed_habits_count == 1 %>
+  <%= turbo_stream.remove("empty_completed") %>
+<% end %>
+<% if current_user.habit_items.count == completed_habits_count %>
+  <%= turbo_stream.update "habit_items_inprogress", partial: "habits/items/empty_inprogress" %>
+<% end %>
 <%= turbo_stream.append "habit_items_completed", partial: "habits/items/habit_card", locals: { item: @item } %>

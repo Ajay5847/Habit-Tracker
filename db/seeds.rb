@@ -11,6 +11,14 @@ def hash_password(password)
   BCrypt::Password.create(password)
 end
 
+
+# Create a system user for shared lists
+system_user = User.find_or_create_by!(email: 'system@habittracker.com') do |u|
+  u.password = hash_password('systempassword')
+  u.first_name = 'System'
+  u.last_name = 'User'
+end
+
 users = [
   { email: 'alice@example.com', password: hash_password(Faker::Internet.password(min_length: 8)) },
   { email: 'bob@example.com', password: hash_password(Faker::Internet.password(min_length: 8)) },
@@ -18,27 +26,43 @@ users = [
 ]
 
 user_records = users.map do |attrs|
-  User.create!(attrs)
+  User.find_or_create_by!(email: attrs[:email]) do |u|
+    u.password = attrs[:password]
+  end
 end
 
 tag_names = [
-  { name: 'Fitness', color: '#4CAF50' },
-  { name: 'Health', color: '#F44336' },
-  { name: 'Work', color: '#2196F3' },
-  { name: 'Morning Routine', color: '#FFC107' },
-  { name: 'Reading', color: '#9C27B0' },
-  { name: 'Mindfulness', color: '#00BCD4' },
-  { name: 'Productivity', color: '#FF9800' }
+  { name: 'Fitness', color: '#4CAF50', shared: true },
+  { name: 'Health', color: '#F44336', shared: true },
+  { name: 'Work', color: '#2196F3', shared: true },
+  { name: 'Morning Routine', color: '#FFC107', shared: true },
+  { name: 'Reading', color: '#9C27B0', shared: true },
+  { name: 'Mindfulness', color: '#00BCD4', shared: true },
+  { name: 'Productivity', color: '#FF9800', shared: true }
 ]
 
-tags = tag_names.map { |t| Habits::Tag.create!(t) }
+tags = tag_names.map do |t|
+  Habits::Tag.find_or_create_by!(name: t[:name]) do |tag|
+    tag.color = t[:color]
+    tag.shared = t[:shared]
+  end
+end
 
+
+# Shared list templates
 list_templates = [
   { name: 'Morning Routine', description: 'Start your day right with these habits.' },
   { name: 'Fitness', description: 'Daily fitness and exercise habits.' },
   { name: 'Work Tasks', description: 'Stay productive at work.' },
   { name: 'Wellness', description: 'Habits for a healthy mind and body.' }
 ]
+
+# Create shared lists for the system user
+shared_lists = list_templates.map do |lt|
+  Habits::List.find_or_create_by!(user: system_user, name: lt[:name]) do |list|
+    list.description = lt[:description]
+  end
+end
 
 habit_items = [
   { name: 'Drink Water', tags: [ 'Health', 'Morning Routine' ], data: { target_value: 1, target_unit: 'liter', duration_minutes: 0 } },
@@ -50,9 +74,12 @@ habit_items = [
   { name: 'Plan Day', tags: [ 'Productivity', 'Morning Routine' ], data: { target_value: 1, target_unit: 'session', duration_minutes: 10 } }
 ]
 
+
 user_records.each do |user|
   lists = list_templates.map do |lt|
-    Habits::List.create!(user: user, name: lt[:name], description: lt[:description])
+    Habits::List.find_or_create_by!(user: user, name: lt[:name]) do |list|
+      list.description = lt[:description]
+    end
   end
 
   lists.each do |list|

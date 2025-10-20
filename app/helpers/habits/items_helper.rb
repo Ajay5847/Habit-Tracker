@@ -10,4 +10,20 @@ module Habits::ItemsHelper
     end
     "#{base} #{style}"
   end
+
+  def all_habits_lists_for_dropdown
+    system_user = User.system_user
+    shared_lists = Habits::List.where(user: system_user)
+    shared_list_names = shared_lists.pluck(:name)
+    user_lists = Habits::List.where(user: current_user).where.not(name: shared_list_names)
+    Habits::List.where(id: (user_lists.pluck(:id) + shared_lists.pluck(:id))).order(:name)
+  end
+
+  def tag_options_for_user
+    shared_tags = Habits::Tag.where(shared: true)
+    shared_tag_names = shared_tags.pluck(:name)
+    user_tags = Habits::Tag.joins(items: { list: :user }).where(habits_lists: { user_id: current_user.id }).where.not(name: shared_tag_names)
+    tags = shared_tags + user_tags
+    tags.uniq.sort_by(&:name).map { |t| [t.name, t.id] }
+  end
 end

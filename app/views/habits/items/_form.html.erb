@@ -1,8 +1,5 @@
 <%= turbo_frame_tag 'habits_item_form' do %>
-  <%
-    selected_list = @item.list || Habits::List.default_list
-    all_habits_list = Habits::List.all
-  %>
+  <% current_list = @item.list || current_user.default_list %>
   <% if @item.errors.any? %>
     <div class="rounded-md bg-red-50 p-4">
       <div class="flex">
@@ -27,7 +24,7 @@
       </div>
     </div>
   <% end %>
-  <%= form_with(model: @item, url: habits_list_items_path(selected_list), local: true) do |f| %>
+  <%= form_with(model: @item, url: @item.new_record? ? habits_list_items_path(current_list) : habits_list_item_path(current_list, @item), method: @item.new_record? ? :post : :patch, local: true) do |f| %>
     <div class="space-y-6">
       <!-- Name -->
       <div>
@@ -37,10 +34,9 @@
       </div>
 
       <!-- Habit List -->
-      <div>
-        <%= f.label :list_id, "Habit List", class: "block text-sm font-medium text-gray-700 mb-1" %>
-        <%= f.select :list_id, options_from_collection_for_select(all_habits_list, :id, :name, selected_list.id), {},
-            class: "w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition" %>
+      <div data-controller="tom-select" data-tom-select-mode-value="single">
+        <%= f.label :list_id, "Habit List", class: "text-left tracking-normal text-gray-700 text-base leading-tight" %>
+        <%= f.select :list_id, options_from_collection_for_select(all_habits_lists_for_dropdown, :id, :name, current_list.id), {}, class: "w-full form-select rounded-md mt-3", data: { tom_select_target: 'select' }%>
       </div>
 
       <div x-data="{ frequency: '<%= @item.frequency %>', selectedDays: [] }" class="space-y-6">
@@ -74,11 +70,9 @@
       <!-- Tags -->
       <div data-controller="tom-select">
         <%= f.label :tag_ids, "Tags", class: "text-left tracking-normal text-gray-700 text-base leading-tight" %>
-        <%= select_tag "habits_item[tag_ids][]",
-              options_for_select(
-                Habits::Tag.all.map { |t| [t.name, t.id] },
-                @item.tag_ids
-              ),
+        <%= f.select :tag_ids,
+              options_for_select(tag_options_for_user, @item.tag_ids),
+              {},
               multiple: true,
               class: "w-full form-select rounded-md mt-3",
               data: { tom_select_target: 'select' } %>
@@ -94,7 +88,7 @@
 
       <!-- Submit -->
       <div>
-        <%= f.submit "Save", class: "w-full px-4 py-2 bg-primary-600 text-white font-semibold rounded-lg shadow hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition cursor-pointer" %>
+        <%= f.submit @item.new_record? ? "Create Habit" : "Update Habit", class: "w-full px-4 py-2 bg-primary-600 text-white font-semibold rounded-lg shadow hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition cursor-pointer" %>
       </div>
     </div>
   <% end %>

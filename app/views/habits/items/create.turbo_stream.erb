@@ -1,4 +1,12 @@
 <% if @item.persisted? %>
+  <%
+    total_habit_items = current_user.habit_items.count
+    completed_habit_items = current_user.habit_items.complete.count
+  %>
+  <% if total_habit_items == 1 || ((total_habit_items - completed_habit_items) == 1) %>
+    <%= turbo_stream.remove("empty_inprogress") %>
+  <% end %>
+  <%= turbo_stream.append("habit_items_inprogress", partial: "habits/items/habit_card", locals: { item: @item }) %>
   <%= turbo_stream.append("flash_messages", partial: "shared/flash_message", locals: { type: "notice", message: "Habit item was successfully created." }) %>
   <% close_slideover %>
 <% else %>

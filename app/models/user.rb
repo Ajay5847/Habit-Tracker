@@ -30,6 +30,8 @@ class User < ApplicationRecord
   has_many :habits_lists, class_name: "Habits::List", dependent: :destroy
   has_many :habit_items, through: :habits_lists, source: :items
 
+  after_commit :create_default_habits_list, on: :create
+
   def self.create_from_provider_data(provider_data)
     where(provider: provider_data.provider, uid: provider_data.uid).first_or_create do |user|
       user.email = provider_data.info.email
@@ -37,7 +39,22 @@ class User < ApplicationRecord
     end
   end
 
+  def self.system_user
+    find_by(email: 'system@habittracker.com')
+  end
+
   def full_name
     [ first_name, last_name ].compact.join(" ")
+  end
+
+
+  def default_list
+    habits_lists.find_by(name: Habits::List::DEFAULT_LIST[:name])
+  end
+
+  private
+
+  def create_default_habits_list
+    habits_lists.create(name: Habits::List::DEFAULT_LIST[:name], description: Habits::List::DEFAULT_LIST[:description])
   end
 end

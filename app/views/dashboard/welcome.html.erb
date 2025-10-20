@@ -10,7 +10,10 @@
         </p>
       </div>
       <div class="flex items-center space-x-3">
-        <%= link_to 'Add Habit', new_habits_list_item_path(Habits::List.default_list), class: 'bg-green-500 text-gray-700 px-6 py-3 rounded-xl font-medium hover:bg-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center space-x-2', data: { turbo_stream: true } %>
+        <%= link_to new_habits_list_item_path(current_user.default_list), class: 'bg-green-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center space-x-2', data: { turbo_stream: true } do %>
+          <i class="fa fa-plus mr-2"></i>
+          Add Habit
+        <% end %>
       </div>
     </div>
   </div>
@@ -39,15 +42,23 @@
       </div>
       <div x-show="tab === 'inprogress'">
         <%= turbo_frame_tag "habit_items_inprogress", class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" do %>
-          <% @in_progress_habits.each do |item| %>
-            <%= render partial: "habits/items/habit_card", locals: { item: item } %>
+          <% if @in_progress_habits.any? %>
+            <% @in_progress_habits.each do |item| %>
+              <%= render partial: "habits/items/habit_card", locals: { item: item } %>
+            <% end %>
+          <% else %>
+            <%= render partial: "habits/items/empty_inprogress" %>
           <% end %>
         <% end %>
       </div>
       <div x-show="tab === 'completed'">
         <%= turbo_frame_tag "habit_items_completed", class: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" do %>
-          <% @completed_habits.each do |item| %>
-            <%= render partial: "habits/items/habit_card", locals: { item: item } %>
+          <% if @completed_habits.any? %>
+            <% @completed_habits.each do |item| %>
+              <%= render partial: "habits/items/habit_card", locals: { item: item } %>
+            <% end %>
+          <% else %>
+            <%= render partial: "habits/items/empty_completed" %>
           <% end %>
         <% end %>
       </div>

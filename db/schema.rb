@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_20_120000) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_20_190000) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -70,6 +70,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_120000) do
     t.string "color"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "shared", default: false, null: false
   end
 
   create_table "users", force: :cascade do |t|
