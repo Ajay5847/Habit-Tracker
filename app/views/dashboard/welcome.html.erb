@@ -2,5 +2,5 @@
   <h1 class="text-4xl font-bold text-primary-700 mb-6">Welcome to Habit Tracker!</h1>
   <p class="text-lg text-text-secondary">You're signed in. Start tracking your habits and building streaks!</p>
 
-  <%= link_to 'Add Habit', new_habits_list_item_path(list_id: Habits::List.default_list.id), class: 'mt-2 btn btn-sm bg-acai-700 text-white justify-center', data: { turbo_stream: true } %>
+  <%= link_to 'Add Habit', new_habits_list_item_path(Habits::List.default_list), class: 'mt-2 btn btn-sm font-bold text-primary-700 justify-center', data: { turbo_stream: true } %>
 </div>

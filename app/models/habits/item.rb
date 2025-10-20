@@ -25,6 +25,8 @@
 #  fk_rails_...  (list_id => habits_lists.id)
 #
 class Habits::Item < ApplicationRecord
+  DAYS = %w[mon tue wed thu fri sat sun].freeze
+
   store_attribute :data, :target_value, :integer, default: 0
   store_attribute :data, :target_unit, :string, default: nil
   store_attribute :data, :duration_minutes, :integer, default: 0
@@ -38,4 +40,26 @@ class Habits::Item < ApplicationRecord
   enum :frequency, { daily: 0, weekly: 1, custom: 2 }
 
   validates :name, presence: true
+
+  before_save :sanitize_name,
+
+  def selected_days
+    return [] if days_mask.blank? || days_mask.zero?
+
+    DAYS.each_with_index.map { |day, i| day if (days_mask & (1 << i)) != 0 }.compact
+  end
+
+  def calculate_days_mask(custom_days)
+    return unless custom?
+    return 0 if custom_days.blank?
+
+    days = Array(custom_days).flat_map { |d| d.split(",") }.map(&:strip).map(&:downcase)
+    days.sum { |day| 1 << DAYS.index(day) if DAYS.include?(day) }.to_i
+  end
+
+private
+
+  def sanitize_name
+    self.name = name.strip
+  end
 end

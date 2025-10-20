@@ -1,0 +1,8 @@
+<% if @item.persisted? %>
+  <%= turbo_stream.append("flash_messages", partial: "shared/flash_message", locals: { type: "notice", message: "Habit item was successfully created." }) %>
+  <%= turbo_stream.replace "slideover-content" do %>
+    <%= turbo_frame_tag "slideover-content", class: "hidden" %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace 'habits_item_form', render('form', item: @item) %>
+<% end %>
