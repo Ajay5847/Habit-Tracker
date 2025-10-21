@@ -11,8 +11,8 @@
       <!-- Navigation Links -->
       <div class="hidden md:flex items-center space-x-8">
         <%= link_to "Dashboard", root_path, class: "text-text-secondary hover:text-primary-600 transition-colors duration-200" %>
-        <a href="habit_management.html" class="text-text-secondary hover:text-primary-600 transition-colors duration-200">Habits</a>
-        <a href="calendar_overview.html" class="text-text-secondary hover:text-primary-600 transition-colors duration-200">Calendar</a>
+        <a href="#" class="text-text-secondary hover:text-primary-600 transition-colors duration-200">Habits</a>
+        <a href="#" class="text-text-secondary hover:text-primary-600 transition-colors duration-200">Calendar</a>
         <% if user_signed_in? %>
           <%= link_to destroy_user_session_path, method: :delete, class: "flex items-center text-text-secondary hover:text-red-600 transition-colors duration-200 ml-4", data: { turbo_method: :delete } do %>
             <i class="fas fa-sign-out-alt mr-2"></i>
@@ -30,8 +30,8 @@
   <div x-show="open" class="md:hidden bg-white border-t border-soft" x-cloak>
     <div class="px-4 py-3 space-y-3">
       <%= link_to "Dashboard", root_path, class: "block text-text-secondary hover:text-primary-600 transition-colors duration-200" %>
-      <a href="habit_management.html" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Habits</a>
-      <a href="calendar_overview.html" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Calendar</a>
+      <a href="#" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Habits</a>
+      <a href="#" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Calendar</a>
       <% if user_signed_in? %>
         <%= link_to destroy_user_session_path, method: :delete, class: "flex items-center text-text-secondary hover:text-red-600 transition-colors duration-200 mt-2", data: { turbo_method: :delete } do %>
           <i class="fas fa-sign-out-alt mr-2"></i>
