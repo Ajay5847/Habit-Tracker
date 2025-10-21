@@ -7,3 +7,4 @@
   <%= turbo_stream.update "habit_items_inprogress", partial: "habits/items/empty_inprogress" %>
 <% end %>
 <%= turbo_stream.append "habit_items_completed", partial: "habits/items/habit_card", locals: { item: @item } %>
+<%= turbo_stream.append("flash_messages", partial: "shared/flash_message", locals: { type: "notice", message: "Great job on completing your habit...🎉" }) %>

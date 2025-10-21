@@ -6,17 +6,20 @@
   <% unless item.complete? %>
     <div class="absolute top-4 right-4 flex space-x-2">
       <!-- Mark Complete -->
-      <%= button_to mark_complete_habits_list_item_path(item.list, item),
-                    method: :patch,
-                    class: "w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white hover:bg-primary-600 transition",
-                    data: { turbo_stream: true } do %>
+      <%= button_to mark_complete_habits_list_item_path(item.list, item), method: :patch, class: "w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white hover:bg-primary-600 transition", data: { turbo_stream: true } do %>
         <i class="fas fa-check text-sm"></i>
       <% end %>
 
       <!-- Edit -->
-      <%= link_to edit_habits_list_item_path(item.list, item),
-                  class: "w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition", data: { turbo_stream: true } do %>
+      <%= link_to edit_habits_list_item_path(item.list, item), class: "w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-400 transition", data: { turbo_stream: true } do %>
         <i class="fas fa-pen text-gray-600 text-sm"></i>
+      <% end %>
+
+      <!-- Delete -->
+      <%= link_to habits_list_item_path(item.list, item),
+        data: { turbo_method: :delete, turbo_stream: true, turbo_confirm: 'Are you sure you want to delete this habit?' },
+        class: "w-8 h-8 bg-red-200 rounded-full flex items-center justify-center hover:bg-red-400 transition" do %>
+        <i class="fas fa-trash text-sm"></i>
       <% end %>
     </div>
   <% end %>

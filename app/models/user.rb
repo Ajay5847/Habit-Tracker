@@ -36,11 +36,13 @@ class User < ApplicationRecord
     where(provider: provider_data.provider, uid: provider_data.uid).first_or_create do |user|
       user.email = provider_data.info.email
       user.password = Devise.friendly_token[0, 20]
+      user.first_name = provider_data.info.first_name
+      user.last_name = provider_data.info.last_name
     end
   end
 
   def self.system_user
-    find_by(email: 'system@habittracker.com')
+    find_by(email: "system@habittracker.com")
   end
 
   def full_name

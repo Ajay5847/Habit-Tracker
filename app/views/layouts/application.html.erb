@@ -2,9 +2,18 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Habit Tracker" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="Habit Tracker helps you create and track your daily habits to build consistency and reach your goals.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="index, follow">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Social preview -->
+    <meta property="og:title" content="Habit Tracker">
+    <meta property="og:description" content="Track your daily habits and stay consistent with Habit Tracker.">
+    <meta property="og:image" content="https://habit-tracker-ohfv.onrender.com/icon.png">
+    <meta property="og:url" content="https://habit-tracker-ohfv.onrender.com">
+    <meta property="og:type" content="website">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 

@@ -24,7 +24,7 @@
       </div>
     </div>
   <% end %>
-  <%= form_with(model: @item, url: @item.new_record? ? habits_list_items_path(current_list) : habits_list_item_path(current_list, @item), method: @item.new_record? ? :post : :patch, local: true) do |f| %>
+  <%= form_with(model: @item, url: @item.new_record? ? habits_list_items_path(current_list) : habits_list_item_path(current_list, @item), method: @item.new_record? ? :post : :patch) do |f| %>
     <div class="space-y-6">
       <!-- Name -->
       <div>
@@ -39,7 +39,7 @@
         <%= f.select :list_id, options_from_collection_for_select(all_habits_lists_for_dropdown, :id, :name, current_list.id), {}, class: "w-full form-select rounded-md mt-3", data: { tom_select_target: 'select' }%>
       </div>
 
-      <div x-data="{ frequency: '<%= @item.frequency %>', selectedDays: [] }" class="space-y-6">
+      <div x-data="{ frequency: '<%= @item.frequency %>', selectedDays: <%= @item.selected_days %> }" class="space-y-6">
         <!-- Frequency Dropdown -->
         <div>
           <%= f.label :frequency, "Frequency", class: "block text-sm font-medium text-gray-700 mb-1" %>
@@ -51,13 +51,13 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">Select Days</label>
 
           <div class="flex flex-wrap gap-2">
-            <% %w[Mon Tue Wed Thu Fri Sat Sun].each do |day| %>
+            <% Habits::Item::DAYS.each do |day| %>
               <button
                 type="button"
                 x-on:click="selectedDays.includes('<%= day %>') ? selectedDays = selectedDays.filter(d => d !== '<%= day %>') : selectedDays.push('<%= day %>')"
                 x-bind:class="selectedDays.includes('<%= day %>') ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'"
                 class="px-3 py-1 rounded-full text-sm font-medium transition">
-                <%= day %>
+                <%= day.titleize %>
               </button>
             <% end %>
           </div>
@@ -88,7 +88,7 @@
 
       <!-- Submit -->
       <div>
-        <%= f.submit @item.new_record? ? "Create Habit" : "Update Habit", class: "w-full px-4 py-2 bg-primary-600 text-white font-semibold rounded-lg shadow hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition cursor-pointer" %>
+        <%= f.submit @item.new_record? ? "Create Habit" : "Update Habit", class: "w-full px-4 py-2 bg-primary-600 text-white font-semibold rounded-lg shadow hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition cursor-pointer", data: { turbo_submits_with: "Submitting..." } %>
       </div>
     </div>
   <% end %>

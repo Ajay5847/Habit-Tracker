@@ -1,6 +1,6 @@
 class Habits::ItemsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_item, only: [ :edit, :update, :mark_complete ]
+  before_action :set_item, only: [ :edit, :update, :mark_complete, :destroy ]
 
   def new
     @item = Habits::Item.new
@@ -41,6 +41,10 @@ class Habits::ItemsController < ApplicationController
 
   def mark_complete
     @item.update(status: Habits::Item.statuses[:complete])
+  end
+
+  def destroy
+    @item.destroy
   end
 
   private
