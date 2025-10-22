@@ -1,13 +1,15 @@
 module Habits::ItemsHelper
   def habit_card_classes(item)
     base = "habit-card rounded-2xl p-6 shadow-sm relative overflow-hidden transition hover:shadow-md"
-    style = case item.status
+
+    status = item.habit? ? item.today_log_status : item.status
+    style = case status
     when "draft" then "bg-gray-100"
-    when "incomplete" then "bg-white border border-gray-100"
     when "complete" then "bg-green-200"
-    when "overdue" then "bg-red-200"
+    when "overdue", "skipped" then "bg-red-200"
     else "bg-white border border-gray-100"
     end
+
     "#{base} #{style}"
   end
 
@@ -24,6 +26,6 @@ module Habits::ItemsHelper
     shared_tag_names = shared_tags.pluck(:name)
     user_tags = Habits::Tag.joins(items: { list: :user }).where(habits_lists: { user_id: current_user.id }).where.not(name: shared_tag_names)
     tags = shared_tags + user_tags
-    tags.uniq.sort_by(&:name).map { |t| [t.name, t.id] }
+    tags.uniq.sort_by(&:name).map { |t| [ t.name, t.id ] }
   end
 end

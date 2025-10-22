@@ -3,7 +3,7 @@
   class="<%= habit_card_classes(item) %>">
 
   <!-- Action Buttons -->
-  <% unless item.complete? %>
+  <% unless item.completed_today? %>
     <div class="absolute top-4 right-4 flex space-x-2">
       <!-- Mark Complete -->
       <%= button_to mark_complete_habits_list_item_path(item.list, item), method: :patch, class: "w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white hover:bg-primary-600 transition", data: { turbo_stream: true } do %>
@@ -83,7 +83,7 @@
     <% end %>
 
     <div class="pt-2">
-      <% if item.complete? %>
+      <% if item.completed_today? %>
         <div class="flex items-center space-x-2 text-success-600">
           <i class="fas fa-check-circle"></i>
           <span class="text-sm font-medium">

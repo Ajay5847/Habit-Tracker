@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_20_190000) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_22_172359) do
   create_schema "auth"
   create_schema "extensions"
   create_schema "graphql"
@@ -65,6 +65,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_190000) do
     t.index ["user_id"], name: "index_habits_lists_on_user_id"
   end
 
+  create_table "habits_logs", force: :cascade do |t|
+    t.bigint "item_id", null: false
+    t.date "log_date", null: false
+    t.integer "status", default: 0, null: false
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_habits_logs_on_item_id"
+  end
+
   create_table "habits_tags", force: :cascade do |t|
     t.string "name"
     t.string "color"
@@ -94,4 +104,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_190000) do
   add_foreign_key "habits_item_tags", "habits_tags", column: "tag_id"
   add_foreign_key "habits_items", "habits_lists", column: "list_id"
   add_foreign_key "habits_lists", "users"
+  add_foreign_key "habits_logs", "habits_items", column: "item_id"
 end

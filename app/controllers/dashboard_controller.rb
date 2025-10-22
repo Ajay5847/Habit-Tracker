@@ -1,8 +1,10 @@
 class DashboardController < ApplicationController
   def index
     if user_signed_in?
-      @in_progress_habits = current_user.habit_items.where.not(status: Habits::Item.statuses[:complete]).today.order(created_at: :asc)
-      @completed_habits = current_user.habit_items.complete.today.order(updated_at: :desc)
+      habits = current_user.habit_items.select(&:show_today?)
+
+      @in_progress_habits = habits.reject(&:completed_today?)
+      @completed_habits   = habits.select(&:completed_today?)
 
       render :welcome
     else

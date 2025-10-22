@@ -35,16 +35,33 @@ class Habits::Item < ApplicationRecord
 
   has_many :item_tags, class_name: "Habits::ItemTag", dependent: :destroy
   has_many :tags, through: :item_tags, class_name: "Habits::Tag"
+  has_many :logs, class_name: "Habits::Log", dependent: :destroy
 
   enum :item_type, { habit: 0, todo: 1 }
   enum :frequency, { daily: 0, weekly: 1, custom: 2 }
-  enum :status, { draft: 0, incomplete: 1, complete: 2, overdue: 3 }
+  enum :status, { draft: 0, complete: 1, overdue: 2 }
 
   validates :name, presence: true
 
   before_save :sanitize_name
 
-  scope :today, -> { where(created_at: Date.today.all_day) }
+  def show_today?
+    return true if [ :daily, :weekly ].include?(frequency.to_sym)
+
+    selected_days&.include?(Date.current.strftime("%a").downcase)
+  end
+
+  def completed_today?
+    if habit?
+      logs.exists?(log_date: Date.current, status: Habits::Log.statuses[:complete])
+    else
+      complete?
+    end
+  end
+
+  def today_log_status
+    logs.find_by(log_date: Date.current)&.status || "incomplete"
+  end
 
   def selected_days
     return [] if days_mask.blank? || days_mask.zero?

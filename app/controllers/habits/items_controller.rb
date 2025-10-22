@@ -40,7 +40,11 @@ class Habits::ItemsController < ApplicationController
   end
 
   def mark_complete
-    @item.update(status: Habits::Item.statuses[:complete])
+    if @item.habit?
+      @item.logs.create!(log_date: Date.current, status: Habits::Log.statuses[:complete])
+    elsif @item.todo?
+      @item.update(status: Habits::Item.statuses[:complete])
+    end
   end
 
   def destroy
