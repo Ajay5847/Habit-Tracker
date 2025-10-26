@@ -1,10 +1,11 @@
 <%= turbo_stream.remove dom_id(@item) %>
-<% completed_habits_count = current_user.habit_items.complete.count %>
-<% if completed_habits_count == 1 %>
-  <%= turbo_stream.remove("empty_completed") %>
+<% if @in_progress_habits_count.zero? %>
+  <%= turbo_stream.update "habit_items_inprogress" do %>
+    <%= render "habits/items/empty_inprogress", completed_habits_count: @completed_habits_count %>
+  <% end %>
 <% end %>
-<% if current_user.habit_items.count == completed_habits_count %>
-  <%= turbo_stream.update "habit_items_inprogress", partial: "habits/items/empty_inprogress" %>
-<% end %>
-<%= turbo_stream.append "habit_items_completed", partial: "habits/items/habit_card", locals: { item: @item } %>
+
 <%= turbo_stream.append("flash_messages", partial: "shared/flash_message", locals: { type: "notice", message: "Great job on completing your habit...🎉" }) %>
+
+<%= turbo_stream.remove("empty_completed") %>
+<%= turbo_stream.append "habit_items_completed", partial: "habits/items/habit_card", locals: { item: @item } %>

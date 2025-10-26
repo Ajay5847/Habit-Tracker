@@ -2,6 +2,15 @@ class Habits::ItemsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item, only: [ :edit, :update, :mark_complete, :destroy ]
 
+  def index
+    if params[:list_id]
+      @list = Habits::List.find(params[:list_id])
+      @items = @list.items
+    else
+      @items = current_user.habit_items.includes(:list, :tags)
+    end
+  end
+
   def new
     @item = Habits::Item.new
   end
@@ -45,6 +54,12 @@ class Habits::ItemsController < ApplicationController
     elsif @item.todo?
       @item.update(status: Habits::Item.statuses[:complete])
     end
+
+    # Get all habits that should show today
+    habits = current_user.habit_items.select(&:show_today?)
+
+    @completed_habits_count = habits.select(&:completed_today?).count
+    @in_progress_habits_count = habits.reject(&:completed_today?).count
   end
 
   def destroy

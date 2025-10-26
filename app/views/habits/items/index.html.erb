@@ -1,28 +1,103 @@
-<div x-data="{ tab: 'inprogress' }" class="tabs-container">
-  <div class="flex space-x-4 mb-6">
-    <button
-      :class="tab === 'inprogress' ? 'bg-primary-100 text-primary-700' : ''"
-      class="tab-btn font-semibold px-4 py-2 rounded-lg"
-      @click="tab = 'inprogress'"
-    >In Progress</button>
-    <button
-      :class="tab === 'completed' ? 'bg-green-100 text-green-700' : ''"
-      class="tab-btn font-semibold px-4 py-2 rounded-lg"
-      @click="tab = 'completed'"
-    >Completed</button>
-  </div>
-  <div x-show="tab === 'inprogress'" id="habit_items_inprogress">
-    <%= turbo_frame_tag "habit_items_inprogress" do %>
-      <% @items.where.not(status: :complete).each do |item| %>
-        <%= render partial: "habits/items/habit_card", locals: { item: item } %>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="{
+    searchTerm: '',
+    tagFilter: '',
+    
+    get hasActiveFilters() {
+      return this.searchTerm !== '' || this.tagFilter !== '';
+    },
+    
+    filterHabits() {
+      const habits = this.$refs.habitsList?.querySelectorAll('.habit-card') || [];
+      let visibleCount = 0;
+      
+      habits.forEach(card => {
+        const tagIds = (card.dataset.tagIds || '').split(',').filter(id => id);
+        const matchesTag = !this.tagFilter || tagIds.includes(this.tagFilter);
+        
+        const searchLower = this.searchTerm.toLowerCase();
+        const matchesSearch = searchLower === '' || 
+          (card.dataset.name || '').includes(searchLower) ||
+          (card.dataset.list || '').includes(searchLower);
+        
+        const matches = matchesSearch && matchesTag;
+        
+        card.style.display = matches ? 'block' : 'none';
+        if (matches) visibleCount++;
+      });
+      
+      this.$refs.emptyState.classList.toggle('hidden', visibleCount > 0);
+    },
+    
+    clearFilters() {
+      this.searchTerm = this.tagFilter = '';
+      this.filterHabits();
+    }
+  }">
+    <!-- Page Header -->
+    <div class="mb-8">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-fluid-3xl font-bold text-text-primary">Habit Management</h1>
+          <p class="text-fluid-lg text-text-secondary mt-2">Create, organize, and manage your habits</p>
+        </div>
+        <%= link_to new_habits_list_item_path(current_user.default_list), class: 'bg-green-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center space-x-2', data: { turbo_stream: true } do %>
+          <i class="fa fa-plus mr-2"></i>
+          Create New Habit
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="bg-white rounded-2xl shadow-soft p-6 mb-8">
+      <div class="flex flex-col lg:flex-row gap-4">
+        <!-- Search Bar -->
+        <div class="flex-1 relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-search text-text-secondary"></i>
+          </div>
+          <input type="text" 
+            x-model="searchTerm"
+            @input="filterHabits()"
+            placeholder="Search habits..."
+            class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" />
+        </div>
+
+        <!-- Tag Filter -->
+        <div class="relative lg:w-auto">
+          <%= select_tag :tag_filter,
+            options_for_select([['All Tags', '']] + tag_options_for_user),
+            'x-model': 'tagFilter',
+            '@change': 'filterHabits()',
+            class: 'w-full appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 lg:min-w-[150px]' %>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="fas fa-chevron-down text-text-secondary text-xs"></i>
+          </div>
+        </div>
+
+        <!-- Clear Filters - Only shown when filters are active -->
+        <button 
+          x-show="hasActiveFilters"
+          x-transition
+          @click="clearFilters()"
+          class="px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors duration-200 whitespace-nowrap"
+          title="Clear all filters">
+          <i class="fas fa-times mr-1"></i>
+          <span class="hidden sm:inline">Clear</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Habits List -->
+    <div x-ref="habitsList">
+      <%= turbo_frame_tag "habits_list", class: "space-y-4" do %>
+        <% @items.each do |item| %>
+          <%= render "habits/items/habit_list_card", item: item %>
+        <% end %>
       <% end %>
+    </div>
+
+    <!-- Empty State -->
+    <%= turbo_frame_tag "empty_state" do %>
+      <%= render "habits/items/empty_state", empty_habits: @items.empty? %>
     <% end %>
-  </div>
-  <div x-show="tab === 'completed'" id="habit_items_completed">
-    <%= turbo_frame_tag "habit_items_completed" do %>
-      <% @items.where(status: :complete).each do |item| %>
-        <%= render partial: "habits/items/habit_card", locals: { item: item } %>
-      <% end %>
-    <% end %>
-  </div>
-</div>
+  </main>

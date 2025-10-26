@@ -25,7 +25,7 @@ class Habits::Log < ApplicationRecord
 
   validates :log_date, presence: true, uniqueness: { scope: :item_id }
 
-  after_commit :update_item_streaks, on: [ :create, :update, :destroy ]
+  after_commit :update_item_streaks, on: [ :create, :update ]
 
   private
 

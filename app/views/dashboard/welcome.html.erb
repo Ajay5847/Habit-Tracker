@@ -10,9 +10,9 @@
         </p>
       </div>
       <div class="flex items-center space-x-3">
-        <%= link_to new_habits_list_item_path(current_user.default_list), class: 'bg-green-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-green-600 focus:ring-4 focus:ring-green-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center space-x-2', data: { turbo_stream: true } do %>
-          <i class="fa fa-plus mr-2"></i>
-          Add Habit
+        <%= link_to habits_items_path, class: 'bg-primary-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center space-x-2', data: { turbo: false } do %>
+          <i class="fas fa-list-check mr-2"></i>
+          Manage Habits
         <% end %>
       </div>
     </div>
@@ -22,7 +22,7 @@
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-fluid-2xl font-bold text-gray-700">Today's Habits</h2>
       <div class="flex items-center space-x-4">
-        <span class="text-sm text-gray-400 dark:text-gray-300"><%= Date.today.strftime("%B %d, %Y") %></span>
+        <span class="text-base font-bold text-gray-700"><%= Date.today.strftime("%B %d, %Y") %></span>
       </div>
     </div>
 
@@ -47,7 +47,7 @@
               <%= render partial: "habits/items/habit_card", locals: { item: item } %>
             <% end %>
           <% else %>
-            <%= render partial: "habits/items/empty_inprogress" %>
+            <%= render "habits/items/empty_inprogress", completed_habits_count: @completed_habits.count %>
           <% end %>
         <% end %>
       </div>

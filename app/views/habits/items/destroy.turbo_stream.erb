@@ -1,6 +1,11 @@
 <% if @item.destroyed? %>
   <%= turbo_stream.remove dom_id(@item) %>
   <%= turbo_stream.append("flash_messages", partial: "shared/flash_message", locals: { type: "notice", message: "Habit item was successfully destroyed." }) %>
+  <% if current_user.habit_items.empty? %>
+    <%= turbo_stream.update "empty_state" do %>
+      <%= render "habits/items/empty_state", empty_habits: true %>
+    <% end %>
+  <% end %>
 <% else %>
   <%= turbo_stream.append("flash_messages", partial: "shared/flash_message", locals: { type: "error", message: "Something went wrong." }) %>
 <% end %>
