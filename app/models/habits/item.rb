@@ -30,6 +30,8 @@ class Habits::Item < ApplicationRecord
   store_attribute :data, :target_value, :integer, default: 0
   store_attribute :data, :target_unit, :string, default: nil
   store_attribute :data, :duration_minutes, :integer, default: 0
+  store_attribute :data, :current_streak, :integer, default: 0
+  store_attribute :data, :longest_streak, :integer, default: 0
 
   belongs_to :list, class_name: "Habits::List"
 
@@ -75,6 +77,28 @@ class Habits::Item < ApplicationRecord
 
     days = Array(custom_days).flat_map { |d| d.split(",") }.map(&:strip).map(&:downcase)
     days.sum { |day| 1 << DAYS.index(day) if DAYS.include?(day) }.to_i
+  end
+
+  def update_streaks!
+    completed_dates = logs.complete.order(:log_date).pluck(:log_date)
+    return update!(current_streak: 0, longest_streak: 0) if completed_dates.empty?
+
+    longest = 1
+    current = 1
+
+    completed_dates.each_cons(2) do |a, b|
+      if b == a + 1
+        current += 1
+        longest = [ longest, current ].max
+      else
+        current = 1
+      end
+    end
+
+    # If last log was yesterday or today, keep current streak
+    last_date = completed_dates.last
+    current_streak = last_date >= Date.yesterday ? current : 0
+    update!(current_streak: current_streak, longest_streak: longest)
   end
 
 private

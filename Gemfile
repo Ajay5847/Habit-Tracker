@@ -42,6 +42,7 @@ gem "dotenv-rails"
 
 gem "devise", "~> 4.9"
 gem "store_attribute"
+gem "mission_control-jobs"
 
 # Google OAuth
 gem "omniauth-google-oauth2"
@@ -68,6 +69,7 @@ group :development do
   gem "faker"
   gem "pry", "~> 0.15.0"
   gem "bullet"
+  gem "sqlite3"
 end
 
 group :test do

@@ -24,4 +24,12 @@ class Habits::Log < ApplicationRecord
   enum :status, { draft: 0, complete: 1, skipped: 2 }, validate: true
 
   validates :log_date, presence: true, uniqueness: { scope: :item_id }
+
+  after_commit :update_item_streaks, on: [ :create, :update, :destroy ]
+
+  private
+
+  def update_item_streaks
+    item.update_streaks!
+  end
 end

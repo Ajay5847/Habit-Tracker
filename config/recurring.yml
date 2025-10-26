@@ -9,7 +9,18 @@
 #     priority: 2
 #     schedule: at 5am every day
 
+development:
+  mark_incomplete_habits_as_skipped:
+    class: Habits::MarkIncompleteAsSkippedJob
+    queue: default
+    schedule: at 11:59pm every day
+
 production:
   clear_solid_queue_finished_jobs:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
     schedule: every hour at minute 12
+
+  mark_incomplete_habits_as_skipped:
+    class: Habits::MarkIncompleteAsSkippedJob
+    queue: default
+    schedule: at 11:59pm every day

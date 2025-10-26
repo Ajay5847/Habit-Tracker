@@ -10,6 +10,28 @@ export default class extends Controller {
 
     window.notyf = new Notyf({
       duration: 5000,
+      position: { x: "right", y: "top" },
+      ripple: true,
+      types: [
+        {
+          type: "success",
+          background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+          icon: {
+            className: "fas fa-circle-check",
+            tagName: "i",
+            color: "#fff"
+          }
+        },
+        {
+          type: "error",
+          background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+          icon: {
+            className: "fas fa-circle-xmark",
+            tagName: "i",
+            color: "#fff"
+          }
+        }
+      ]
     });
   }
 

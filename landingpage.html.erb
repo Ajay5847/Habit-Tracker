@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HabitFlow - Build Better Habits</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fhabitflow3044back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+<script type="module" src="https://static.rocket.new/rocket-shot.js?v=0.0.1"></script>
+</head>
+<body class="bg-gradient-to-br from-primary-50 via-background to-secondary-50 min-h-screen">
+    <!-- Navigation Header -->
+    <%# <nav class="bg-white/80 backdrop-blur-sm border-b border-soft shadow-soft sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-soft">
+                        <i class="fas fa-seedling text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-semibold text-text-primary">HabitFlow</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="dashboard_home.html" class="text-text-secondary hover:text-primary-600 transition-colors duration-200">Dashboard</a>
+                    <a href="habit_management.html" class="text-text-secondary hover:text-primary-600 transition-colors duration-200">Habits</a>
+                    <a href="calendar_overview.html" class="text-text-secondary hover:text-primary-600 transition-colors duration-200">Calendar</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-text-primary"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-soft">
+            <div class="px-4 py-3 space-y-3">
+                <a href="dashboard_home.html" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Dashboard</a>
+                <a href="habit_management.html" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Habits</a>
+                <a href="calendar_overview.html" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Calendar</a>
+            </div>
+        </div>
+    </nav> %>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex items-center justify-center px-4 py-8 sm:py-12">
+        <div class="max-w-6xl mx-auto w-full">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Hero Section -->
+                <div class="text-center lg:text-left space-y-8">
+                    <!-- Hero Image -->
+                    <div class="relative mb-8 lg:mb-0">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Person achieving goals" class="w-full h-64 lg:h-80 object-cover rounded-2xl shadow-elevated" loading="lazy" onerror="this.src='https://images.pexels.com/photos/1552617/pexels-photo-1552617.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'; this.onerror=null;" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-primary-900/20 to-transparent rounded-2xl"></div>
+                    </div>
+
+                    <!-- Hero Content -->
+                    <div class="space-y-6">
+                        <h1 class="text-fluid-3xl font-bold text-text-primary leading-tight">
+                            Transform Your Life,
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-secondary-600">
+                                One Habit at a Time
+                            </span>
+                        </h1>
+                        
+                        <p class="text-fluid-lg text-text-secondary leading-relaxed max-w-2xl">
+                            Build lasting habits with HabitFlow's intuitive tracking system. 
+                            Visualize your progress, celebrate streaks, and create the life you've always wanted.
+                        </p>
+
+                        <!-- Feature Highlights -->
+                        <div class="grid sm:grid-cols-3 gap-4 mt-8">
+                            <div class="flex items-center space-x-3 p-4 bg-white/60 rounded-xl backdrop-blur-sm">
+                                <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-chart-line text-primary-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-text-primary">Track Progress</h3>
+                                    <p class="text-sm text-text-secondary">Visual analytics</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3 p-4 bg-white/60 rounded-xl backdrop-blur-sm">
+                                <div class="w-10 h-10 bg-accent-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-fire text-accent-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-text-primary">Build Streaks</h3>
+                                    <p class="text-sm text-text-secondary">Stay motivated</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3 p-4 bg-white/60 rounded-xl backdrop-blur-sm">
+                                <div class="w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-calendar-check text-secondary-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-medium text-text-primary">Daily Check-ins</h3>
+                                    <p class="text-sm text-text-secondary">Simple tracking</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Authentication Forms -->
+                <div class="w-full max-w-md mx-auto lg:mx-0">
+                    <div class="bg-white rounded-2xl shadow-elevated p-8 backdrop-blur-sm">
+                        
+                        <!-- Tab Navigation -->
+                        <div class="flex bg-surface rounded-xl p-1 mb-8">
+                            <button id="loginTab" class="flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200 text-primary-600 bg-white shadow-soft" onclick="switchTab('login')">
+                                Sign In
+                            </button>
+                            <button id="registerTab" class="flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200 text-text-secondary hover:text-text-primary" onclick="switchTab('register')">
+                                Sign Up
+                            </button>
+                        </div>
+
+                        <!-- Login Form -->
+                        <form id="loginForm" class="space-y-6">
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <input type="email" id="loginEmail" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent" placeholder="Email address" value="sarah@habitflow.com" required />
+                                    <label for="loginEmail" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                                        Email address
+                                    </label>
+                                </div>
+
+                                <div class="relative">
+                                    <input type="password" id="loginPassword" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent" placeholder="Password" value="mypassword" required />
+                                    <label for="loginPassword" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                                        Password
+                                    </label>
+                                    <button type="button" class="absolute right-3 top-3 text-text-secondary hover:text-text-primary transition-colors duration-200" onclick="togglePassword('loginPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" />
+                                    <span class="text-sm text-text-secondary">Remember me</span>
+                                </label>
+                                <a href="javascript:void(0)" class="text-sm text-primary-600 hover:text-primary-700 transition-colors duration-200">
+                                    Forgot password?
+                                </a>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]" onclick="handleLogin(event)">
+                                <span class="flex items-center justify-center space-x-2">
+                                    <span>Sign In</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </span>
+                            </button>
+                        </form>
+
+                        <!-- Register Form -->
+                        <form id="registerForm" class="space-y-6 hidden">
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <input type="text" id="registerName" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent" placeholder="Full name" value="John Doe" required />
+                                    <label for="registerName" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                                        Full name
+                                    </label>
+                                </div>
+
+                                <div class="relative">
+                                    <input type="email" id="registerEmail" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent" placeholder="Email address" value="john@example.com" required />
+                                    <label for="registerEmail" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                                        Email address
+                                    </label>
+                                    <div id="emailValidation" class="hidden mt-2">
+                                        <div class="flex items-center space-x-2 text-sm">
+                                            <i class="fas fa-check-circle text-success-500"></i>
+                                            <span class="text-success-600">Valid email format</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="relative">
+                                    <input type="password" id="registerPassword" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 peer placeholder-transparent" placeholder="Password" value="password123" required />
+                                    <label for="registerPassword" class="absolute left-4 -top-2.5 bg-white px-2 text-sm text-text-secondary transition-all duration-200 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-primary-600">
+                                        Password
+                                    </label>
+                                    <button type="button" class="absolute right-3 top-3 text-text-secondary hover:text-text-primary transition-colors duration-200" onclick="togglePassword('registerPassword')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Password Strength Indicator -->
+                                <div id="passwordStrength" class="space-y-2">
+                                    <div class="flex space-x-1">
+                                        <div class="h-1 flex-1 bg-success-500 rounded"></div>
+                                        <div class="h-1 flex-1 bg-success-500 rounded"></div>
+                                        <div class="h-1 flex-1 bg-success-500 rounded"></div>
+                                        <div class="h-1 flex-1 bg-gray-200 rounded"></div>
+                                    </div>
+                                    <p class="text-sm text-success-600">Strong password</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-2">
+                                <input type="checkbox" id="terms" class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500 mt-1" required />
+                                <label for="terms" class="text-sm text-text-secondary">
+                                    I agree to the 
+                                    <a href="javascript:void(0)" class="text-primary-600 hover:text-primary-700 transition-colors duration-200">Terms of Service</a> 
+                                    and 
+                                    <a href="javascript:void(0)" class="text-primary-600 hover:text-primary-700 transition-colors duration-200">Privacy Policy</a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 focus:ring-4 focus:ring-primary-200 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]" onclick="handleRegister(event)">
+                                <span class="flex items-center justify-center space-x-2">
+                                    <span>Create Account</span>
+                                    <i class="fas fa-user-plus"></i>
+                                </span>
+                            </button>
+                        </form>
+
+                        <!-- Social Login -->
+                        <div class="mt-8">
+                            <div class="relative">
+                                <div class="absolute inset-0 flex items-center">
+                                    <div class="w-full border-t border-gray-200"></div>
+                                </div>
+                                <div class="relative flex justify-center text-sm">
+                                    <span class="px-4 bg-white text-text-secondary">Or continue with</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 grid grid-cols-2 gap-3">
+                                <button class="w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl bg-white text-sm font-medium text-text-secondary hover:bg-gray-50 transition-colors duration-200">
+                                    <i class="fab fa-google text-lg"></i>
+                                </button>
+                                <button class="w-full inline-flex justify-center py-3 px-4 border border-gray-200 rounded-xl bg-white text-sm font-medium text-text-secondary hover:bg-gray-50 transition-colors duration-200">
+                                    <i class="fab fa-apple text-lg"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
+            <div class="text-center space-y-4">
+                <div class="w-16 h-16 bg-success-100 rounded-full flex items-center justify-center mx-auto">
+                    <i class="fas fa-check text-success-600 text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-text-primary">Welcome to HabitFlow!</h3>
+                <p class="text-text-secondary">Your account has been created successfully. Let's start building better habits together.</p>
+                <button onclick="redirectToDashboard()" class="w-full bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-4 rounded-xl font-medium hover:from-primary-700 hover:to-primary-800 transition-all duration-200">
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-white/80 backdrop-blur-sm z-40 flex items-center justify-center">
+        <div class="text-center space-y-4">
+            <div class="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto"></div>
+            <p class="text-text-secondary">Setting up your account...</p>
+        </div>
+    </div>
+
+    <script>
+    // Theme Management System
+    let currentTheme = localStorage.getItem('habitflow-theme') || 'light';
+    
+    // Apply theme on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        applyTheme(currentTheme);
+        updateThemeToggleIcon();
+        
+        const registerEmail = document.getElementById('registerEmail');
+        const emailValidation = document.getElementById('emailValidation');
+        
+        if (registerEmail) {
+            registerEmail.addEventListener('input', function() {
+                const email = this.value;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (emailRegex.test(email)) {
+                    emailValidation.classList.remove('hidden');
+                    this.classList.remove('border-error-500');
+                    this.classList.add('border-success-500');
+                } else {
+                    emailValidation.classList.add('hidden');
+                    this.classList.remove('border-success-500');
+                    if (email.length > 0) {
+                        this.classList.add('border-error-500');
+                    }
+                }
+            });
+        }
+    });
+
+    function toggleTheme() {
+        currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('habitflow-theme', currentTheme);
+        applyTheme(currentTheme);
+        updateThemeToggleIcon();
+    }
+
+    function applyTheme(theme) {
+        const html = document.documentElement;
+        if (theme === 'dark') {
+            html.classList.add('dark');
+            document.body.className = 'bg-gray-900 min-h-screen dark';
+        } else {
+            html.classList.remove('dark');
+            document.body.className = 'bg-gradient-to-br from-primary-50 via-background to-secondary-50 min-h-screen';
+        }
+    }
+
+    function updateThemeToggleIcon() {
+        const themeIcon = document.getElementById('themeIcon');
+        if (themeIcon) {
+            themeIcon.className = currentTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+    }
+
+    // Tab switching functionality
+    function switchTab(tab) {
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+
+        if (tab === 'login') {
+            loginTab.className = 'flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200 text-primary-600 bg-white shadow-soft';
+            registerTab.className = 'flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200 text-text-secondary hover:text-text-primary';
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        } else {
+            registerTab.className = 'flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200 text-primary-600 bg-white shadow-soft';
+            loginTab.className = 'flex-1 py-3 px-4 text-sm font-medium rounded-lg transition-all duration-200 text-text-secondary hover:text-text-primary';
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        }
+    }
+
+    // Password visibility toggle
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = input.nextElementSibling.querySelector('i');
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    }
+
+    // Mobile menu toggle with floating dropdown
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobileMenu');
+        const isHidden = mobileMenu.classList.contains('hidden');
+        
+        if (isHidden) {
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('animate-in', 'slide-in-from-top-2', 'fade-in-0');
+            setTimeout(() => {
+                mobileMenu.classList.remove('animate-in', 'slide-in-from-top-2', 'fade-in-0');
+            }, 200);
+        } else {
+            mobileMenu.classList.add('animate-out', 'slide-out-to-top-2', 'fade-out-0');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('animate-out', 'slide-out-to-top-2', 'fade-out-0');
+            }, 200);
+        }
+    }
+
+    // Form validation and submission
+    function handleLogin(event) {
+        event.preventDefault();
+        showLoading();
+        
+        setTimeout(() => {
+            hideLoading();
+            window.location.href = 'dashboard_home.html';
+        }, 1500);
+    }
+
+    function handleRegister(event) {
+        event.preventDefault();
+        showLoading();
+        
+        setTimeout(() => {
+            hideLoading();
+            showSuccessModal();
+        }, 2000);
+    }
+
+    // Loading states
+    function showLoading() {
+        document.getElementById('loadingOverlay').classList.remove('hidden');
+    }
+
+    function hideLoading() {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+    }
+
+    // Success modal
+    function showSuccessModal() {
+        const modal = document.getElementById('successModal');
+        const content = document.getElementById('modalContent');
+        
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            content.classList.remove('scale-95', 'opacity-0');
+            content.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function redirectToDashboard() {
+        window.location.href = 'dashboard_home.html';
+    }
+
+    // Close modal on outside click
+    document.getElementById('successModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.add('hidden');
+        }
+    });
+</script>
+<script id="dhws-dataInjector" src="../public/dhws-data-injector.js"></script>
+</body>
+</html>
