@@ -3,329 +3,248 @@ import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
-// Simple, clean FullCalendar integration for habit tracking
 export default class extends Controller {
   static targets = ["calendar"]
-  static values = {
-    year: Number,
-    month: Number
-  }
+  static values = { year: Number, month: Number }
 
   connect() {
-    console.log("FullCalendar controller connected")
+    this.visibleHabitIds = new Set() // Track which habits are visible
+    this.allVisible = true // Track if all habits are shown
     this.initializeCalendar()
     this.loadHabitData()
-    this.setupModalListeners()
+    this.setupModal()
+    this.setupToggleListeners()
   }
 
   disconnect() {
-    if (this.calendar) {
-      this.calendar.destroy()
-    }
-    this.removeModalListeners()
+    this.calendar?.destroy()
+    this.cleanupModal()
+    this.cleanupToggleListeners()
   }
 
-  setupModalListeners() {
-    // Get modal elements
-    this.modal = document.getElementById('calendar-daily-modal')
-    this.closeBtn = document.getElementById('modal-close-btn')
-
-    if (!this.modal || !this.closeBtn) {
-      console.warn("Modal elements not found")
-      return
-    }
-
-    // Close on button click
-    this.closeModalHandler = () => this.closeModal()
-    this.closeBtn.addEventListener('click', this.closeModalHandler)
-
-    // Close on backdrop click
-    this.backdropClickHandler = (e) => {
-      if (e.target === this.modal) {
-        this.closeModal()
-      }
-    }
-    this.modal.addEventListener('click', this.backdropClickHandler)
-
-    // Close on Escape key
-    this.escapeKeyHandler = (e) => {
-      if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) {
-        this.closeModal()
-      }
-    }
-    document.addEventListener('keydown', this.escapeKeyHandler)
-  }
-
-  removeModalListeners() {
-    if (this.closeBtn && this.closeModalHandler) {
-      this.closeBtn.removeEventListener('click', this.closeModalHandler)
-    }
-    if (this.modal && this.backdropClickHandler) {
-      this.modal.removeEventListener('click', this.backdropClickHandler)
-    }
-    if (this.escapeKeyHandler) {
-      document.removeEventListener('keydown', this.escapeKeyHandler)
-    }
-  }
-
-  // Helper method to format date as YYYY-MM-DD in local timezone
-  formatDateLocal(date) {
-    const year = date.getFullYear()
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const day = String(date.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  }
-
+  // Calendar initialization
   initializeCalendar() {
-    // Create FullCalendar instance
     this.calendar = new Calendar(this.calendarTarget, {
       plugins: [dayGridPlugin, interactionPlugin],
       initialView: 'dayGridMonth',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: ''
-      },
-
-      // Set initial date if provided
       initialDate: new Date(this.yearValue, this.monthValue, 1),
-
-      // Event handlers
+      headerToolbar: { left: 'prev,next today', center: 'title', right: '' },
       dateClick: (info) => this.handleDateClick(info),
       datesSet: (dateInfo) => this.handleMonthChange(dateInfo),
-
-      // Render habit dots in day cells
       dayCellDidMount: (info) => this.renderHabitsInCell(info),
-
-      // Styling
       height: 'auto',
       fixedWeekCount: false,
-
-      // Don't display events as regular events
       eventDisplay: 'none'
     })
-
     this.calendar.render()
   }
 
+  // Data loading
   async loadHabitData() {
     try {
-      // Get current calendar date
       const date = this.calendar.getDate()
-      const year = date.getFullYear()
-      const month = date.getMonth() + 1
-
-      const url = `/habits/calendar.json?year=${year}&month=${month}`
-      console.log('Fetching habit data from:', url)
+      const url = `/habits/calendar.json?year=${date.getFullYear()}&month=${date.getMonth() + 1}`
       const response = await fetch(url)
 
-      console.log("url is ", url)
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
 
       const data = await response.json()
-      console.log("response is ", data)
-      console.log('Received habit data:', data)
       this.habits = data.habits || []
 
-      // Dispatch events for stats and legend
+      // Initialize all habits as visible
+      this.visibleHabitIds = new Set(this.habits.map(h => h.id))
+      this.allVisible = true
+
       this.dispatch("habitsLoaded", { detail: { habits: this.habits } })
       this.dispatch("statsLoaded", { detail: data.stats })
-
-      // Re-render all habit dots with the new data
       this.refreshHabitDots()
-
+      this.updateHabitLegend()
+      this.updateMonthlyStats(data.stats)
     } catch (error) {
-      console.error("Error loading habit data:", error)
+      console.error("Error loading habits:", error)
     }
   }
 
+  // Habit dots rendering
   renderHabitsInCell(info) {
-    if (!this.habits || this.habits.length === 0) return
-
-    const cellDate = info.date
-    const cellMonth = cellDate.getMonth()
-    const currentMonth = this.calendar.getDate().getMonth()
-
-    // Only render for current month days
-    if (cellMonth !== currentMonth) return
+    if (!this.habits?.length || !this.isCurrentMonth(info.date)) return
 
     const dayCell = info.el.querySelector('.fc-daygrid-day-frame')
     if (!dayCell) return
 
-    // Remove any existing dots container to prevent duplicates
-    const existingDots = dayCell.querySelector('.habit-dots-container')
-    if (existingDots) {
-      existingDots.remove()
-    }
+    dayCell.querySelector('.habit-dots-container')?.remove()
 
-    // Format cell date as YYYY-MM-DD in local timezone to match backend format
-    const cellDateString = this.formatDateLocal(cellDate)
-
-    console.log(`Checking completions for date: ${cellDateString}`)
-
-    // Find habits completed on this exact date
-    const completedHabits = this.habits.filter(habit =>
-      habit.completions && habit.completions.includes(cellDateString)
+    const dateString = this.formatDate(info.date)
+    const completedHabits = this.habits.filter(h =>
+      h.completions?.includes(dateString) && this.visibleHabitIds.has(h.id)
     )
 
-    console.log('Completed habits:', completedHabits)
-
-    if (completedHabits.length === 0) return
-
-    console.log(`Rendering ${completedHabits.length} habits for date ${cellDateString}`)
-
-    // Create container for habit dots
-    const dotsContainer = document.createElement('div')
-    dotsContainer.className = 'habit-dots-container'
-    dotsContainer.style.cssText = 'display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; justify-content: center;'
-
-    // Create a dot for each completed habit
-    completedHabits.forEach(habit => {
-      const dot = document.createElement('div')
-      dot.className = 'habit-dot'
-      dot.style.backgroundColor = habit.color
-      dot.title = habit.name
-      dotsContainer.appendChild(dot)
-    })
-
-    // Append to day cell
-    dayCell.appendChild(dotsContainer)
+    if (completedHabits.length > 0) {
+      dayCell.appendChild(this.createDotsContainer(completedHabits))
+    }
   }
 
   refreshHabitDots() {
-    // Remove all existing habit dots
-    const allDots = this.calendarTarget.querySelectorAll('.habit-dots-container')
-    allDots.forEach(dot => dot.remove())
+    this.calendarTarget.querySelectorAll('.habit-dots-container').forEach(el => el.remove())
 
-    // Re-render dots for all visible cells
-    const dayCells = this.calendarTarget.querySelectorAll('.fc-daygrid-day')
-    dayCells.forEach(cell => {
+    this.calendarTarget.querySelectorAll('.fc-daygrid-day').forEach(cell => {
       const dateAttr = cell.getAttribute('data-date')
       if (!dateAttr) return
 
       const cellDate = new Date(dateAttr + 'T00:00:00')
-      const cellMonth = cellDate.getMonth()
-      const currentMonth = this.calendar.getDate().getMonth()
+      if (!this.isCurrentMonth(cellDate)) return
 
-      // Only render for current month days
-      if (cellMonth !== currentMonth) return
-
-      const dayCell = cell.querySelector('.fc-daygrid-day-frame')
-      if (!dayCell) return
-
-      const cellDateString = dateAttr // Already in YYYY-MM-DD format
-
-      // Find habits completed on this exact date
-      const completedHabits = this.habits.filter(habit =>
-        habit.completions && habit.completions.includes(cellDateString)
+      // Filter by visible habits
+      const completedHabits = this.habits.filter(h =>
+        h.completions?.includes(dateAttr) && this.visibleHabitIds.has(h.id)
       )
-
       if (completedHabits.length === 0) return
 
-      // Create container for habit dots
-      const dotsContainer = document.createElement('div')
-      dotsContainer.className = 'habit-dots-container'
-      dotsContainer.style.cssText = 'display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; justify-content: center;'
-
-      // Create a dot for each completed habit
-      completedHabits.forEach(habit => {
-        const dot = document.createElement('div')
-        dot.className = 'habit-dot'
-        dot.style.backgroundColor = habit.color
-        dot.title = habit.name
-        dotsContainer.appendChild(dot)
-      })
-
-      // Append to day cell
-      dayCell.appendChild(dotsContainer)
+      const dayCell = cell.querySelector('.fc-daygrid-day-frame')
+      if (dayCell) dayCell.appendChild(this.createDotsContainer(completedHabits))
     })
+  }
+
+  createDotsContainer(habits) {
+    const container = document.createElement('div')
+    container.className = 'habit-dots-container'
+    container.style.cssText = 'display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; justify-content: center;'
+
+    habits.forEach(habit => {
+      const dot = document.createElement('div')
+      dot.className = 'habit-dot'
+      dot.style.backgroundColor = habit.color
+      dot.title = habit.name
+      container.appendChild(dot)
+    })
+
+    return container
+  }
+
+  // Modal handling
+  setupModal() {
+    this.modal = document.getElementById('calendar-daily-modal')
+    this.closeBtn = document.getElementById('modal-close-btn')
+
+    if (!this.modal || !this.closeBtn) return
+
+    this.closeBtn.addEventListener('click', this.closeModal.bind(this))
+    this.modal.addEventListener('click', (e) => e.target === this.modal && this.closeModal())
+    document.addEventListener('keydown', this.handleEscape = (e) => {
+      if (e.key === 'Escape' && !this.modal.classList.contains('hidden')) this.closeModal()
+    })
+  }
+
+  cleanupModal() {
+    this.closeBtn?.removeEventListener('click', this.closeModal)
+    this.handleEscape && document.removeEventListener('keydown', this.handleEscape)
+  }
+
+  // Toggle listeners
+  setupToggleListeners() {
+    this.toggleAllBtn = document.getElementById('toggle-all-habits')
+    if (this.toggleAllBtn) {
+      this.toggleAllHandler = () => this.toggleAllHabits()
+      this.toggleAllBtn.addEventListener('click', this.toggleAllHandler)
+    }
+
+    // Setup event delegation for habit clicks
+    this.legendList = document.getElementById('habits-legend-list')
+    if (this.legendList) {
+      this.habitClickHandler = (e) => {
+        const habitItem = e.target.closest('[data-habit-id]')
+        if (habitItem) {
+          const habitId = parseInt(habitItem.dataset.habitId)
+          this.toggleHabit(habitId)
+        }
+      }
+      this.legendList.addEventListener('click', this.habitClickHandler)
+    }
+  }
+
+  cleanupToggleListeners() {
+    if (this.toggleAllBtn && this.toggleAllHandler) {
+      this.toggleAllBtn.removeEventListener('click', this.toggleAllHandler)
+    }
+    if (this.legendList && this.habitClickHandler) {
+      this.legendList.removeEventListener('click', this.habitClickHandler)
+    }
+  }
+
+  toggleAllHabits() {
+    this.allVisible = !this.allVisible
+
+    if (this.allVisible) {
+      // Show all habits
+      this.visibleHabitIds = new Set(this.habits.map(h => h.id))
+      this.toggleAllBtn.textContent = 'Hide All'
+    } else {
+      // Hide all habits
+      this.visibleHabitIds.clear()
+      this.toggleAllBtn.textContent = 'Show All'
+    }
+
+    this.refreshHabitDots()
+    this.updateHabitLegend()
+  }
+
+  toggleHabit(habitId) {
+    if (this.visibleHabitIds.has(habitId)) {
+      this.visibleHabitIds.delete(habitId)
+    } else {
+      this.visibleHabitIds.add(habitId)
+    }
+
+    // Update toggle all button text
+    if (this.toggleAllBtn) {
+      this.allVisible = this.visibleHabitIds.size === this.habits.length
+      this.toggleAllBtn.textContent = this.allVisible ? 'Hide All' : 'Show All'
+    }
+
+    this.refreshHabitDots()
+    this.updateHabitLegend()
   }
 
   handleDateClick(info) {
-    console.log('Date clicked:', info.date)
+    const dateString = this.formatDate(info.date)
+    const today = this.formatDate(new Date())
+    const isToday = dateString === today
 
-    // Get all habits for this date
-    const clickedDate = info.date
-    const clickedDateString = this.formatDateLocal(clickedDate)
+    // Categorize habits by their status on this date
+    const completed = this.habits?.filter(h => h.completions?.includes(dateString)) || []
+    const skipped = this.habits?.filter(h => h.skipped?.includes(dateString)) || []
 
-    // Find which habits were completed on this exact date
-    const completedHabits = this.habits ? this.habits.filter(habit =>
-      habit.completions && habit.completions.includes(clickedDateString)
-    ) : []
+    // Not logged only shows for TODAY
+    let notLogged = []
+    if (isToday) {
+      notLogged = this.habits?.filter(h =>
+        !h.completions?.includes(dateString) &&
+        !h.skipped?.includes(dateString) &&
+        !h.drafts?.includes(dateString)
+      ) || []
+    }
 
-    // Find which habits were missed on this date
-    const missedHabits = this.habits ? this.habits.filter(habit =>
-      !habit.completions || !habit.completions.includes(clickedDateString)
-    ) : []
-
-    console.log('Completed habits on', clickedDateString, ':', completedHabits)
-    console.log('Missed habits:', missedHabits)
-
-    // Open modal with the data
-    this.openModal(clickedDate, completedHabits, missedHabits)
+    this.openModal(info.date, completed, skipped, notLogged, isToday)
   }
 
-  openModal(date, completedHabits, missedHabits) {
-    if (!this.modal) {
-      console.error("Modal not found")
-      return
-    }
+  openModal(date, completed, skipped, notLogged, isToday) {
+    if (!this.modal) return
 
-    // Format date string
-    const dateString = date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    const dateStr = date.toLocaleDateString('en-US', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
     })
 
-    // Update modal content
-    const dateElement = document.getElementById('modal-date-string')
-    const completedContainer = document.getElementById('modal-completed-habits')
-    const missedContainer = document.getElementById('modal-missed-habits')
+    this.updateElement('modal-date-string', dateStr)
+    this.renderHabitList('modal-completed-habits', completed, 'completed')
+    this.renderHabitList('modal-skipped-habits', skipped, 'skipped')
+    this.renderHabitList('modal-not-logged-habits', notLogged, 'not-logged')
 
-    if (dateElement) {
-      dateElement.textContent = dateString
+    // Show/hide "Not Logged" section based on whether it's today
+    const notLoggedSection = document.getElementById('modal-not-logged-section')
+    if (notLoggedSection) {
+      notLoggedSection.style.display = isToday ? 'block' : 'none'
     }
 
-    // Render completed habits
-    if (completedContainer) {
-      if (completedHabits.length === 0) {
-        completedContainer.innerHTML = `
-          <p class="text-sm text-text-secondary italic">
-            No habits completed on this day
-          </p>
-        `
-      } else {
-        completedContainer.innerHTML = completedHabits.map(habit => `
-          <div class="flex items-center space-x-2 p-2 rounded-lg bg-success-50">
-            <div class="w-3 h-3 rounded-full" style="background-color: ${habit.color}"></div>
-            <span class="text-sm text-text-primary">${this.escapeHtml(habit.name)}</span>
-            <i class="fas fa-check text-success-600 ml-auto"></i>
-          </div>
-        `).join('')
-      }
-    }
-
-    // Render missed habits
-    if (missedContainer) {
-      if (missedHabits.length === 0) {
-        missedContainer.innerHTML = `
-          <p class="text-sm text-success-600 italic">
-            All habits completed! 🎉
-          </p>
-        `
-      } else {
-        missedContainer.innerHTML = missedHabits.map(habit => `
-          <div class="flex items-center space-x-2 p-2 rounded-lg bg-gray-50">
-            <div class="w-3 h-3 rounded-full" style="background-color: ${habit.color}"></div>
-            <span class="text-sm text-text-primary">${this.escapeHtml(habit.name)}</span>
-          </div>
-        `).join('')
-      }
-    }
-
-    // Show modal
     this.modal.classList.remove('hidden')
     document.body.style.overflow = 'hidden'
   }
@@ -337,41 +256,138 @@ export default class extends Controller {
     }
   }
 
-  escapeHtml(text) {
+  renderHabitList(elementId, habits, status) {
+    const container = document.getElementById(elementId)
+    if (!container) return
+
+    if (habits.length === 0) {
+      const emptyMessages = {
+        'completed': '<p class="text-sm text-text-secondary italic">No habits completed</p>',
+        'skipped': '<p class="text-sm text-text-secondary italic">No habits skipped</p>',
+        'not-logged': '<p class="text-sm text-success-600 italic">All habits logged! 🎉</p>'
+      }
+      container.innerHTML = emptyMessages[status] || ''
+      return
+    }
+
+    const styles = {
+      'completed': { bg: 'bg-success-50', icon: '<i class="fas fa-check text-success-600 ml-auto"></i>' },
+      'skipped': { bg: 'bg-warning-50', icon: '<i class="fas fa-ban text-warning-600 ml-auto"></i>' },
+      'not-logged': { bg: 'bg-gray-50', icon: '<i class="fas fa-circle text-gray-300 ml-auto"></i>' }
+    }
+
+    const style = styles[status] || styles['not-logged']
+
+    container.innerHTML = habits.map(h => `
+      <div class="flex items-center space-x-2 p-2 rounded-lg ${style.bg}">
+        <div class="w-3 h-3 rounded-full" style="background-color: ${h.color}"></div>
+        <span class="text-sm text-text-primary">${this.escape(h.name)}</span>
+        ${style.icon}
+      </div>
+    `).join('')
+  }
+
+  // Habit legend updates
+  updateHabitLegend() {
+    const legendList = document.getElementById('habits-legend-list')
+    const todayCount = document.getElementById('habits-today-count')
+
+    if (!legendList) return
+
+    const today = this.formatDate(new Date())
+    const completedToday = this.habits.filter(h => h.completions?.includes(today))
+
+    // Update today count
+    if (todayCount) {
+      todayCount.textContent = `${completedToday.length} completed today`
+    }
+
+    // Render habits list
+    if (this.habits.length === 0) {
+      legendList.innerHTML = `
+        <div class="text-center py-4">
+          <p class="text-sm text-text-secondary">No active habits found</p>
+          <a href="/habits/items" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+            Create your first habit
+          </a>
+        </div>
+      `
+      return
+    }
+
+    legendList.innerHTML = this.habits.map(habit => {
+      const isVisible = this.visibleHabitIds.has(habit.id)
+      const isCompletedToday = habit.completions?.includes(today)
+      const borderClass = isCompletedToday ? 'border-success-300 bg-success-50/50' : 'border-gray-100'
+      const opacityClass = isVisible ? '' : 'opacity-40'
+      const eyeIcon = isVisible ? 'fas fa-eye text-primary-600' : 'fas fa-eye-slash text-gray-400'
+      const streakHtml = habit.current_streak > 0 ? `
+        <span class="flex items-center gap-1">
+          <i class="fas fa-fire text-accent-600"></i>
+          <span>${habit.current_streak}</span>
+        </span>
+      ` : ''
+
+      return `
+        <div data-habit-id="${habit.id}" 
+             class="flex items-center justify-between p-3 rounded-lg border ${borderClass} ${opacityClass} hover:bg-gray-50 transition-all duration-200 cursor-pointer">
+          <div class="flex items-center space-x-3 flex-1">
+            <div class="w-4 h-4 rounded-full flex-shrink-0" style="background-color: ${habit.color}"></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-text-primary truncate">${this.escape(habit.name)}</p>
+              <div class="flex items-center gap-3 text-xs text-text-secondary mt-0.5">
+                <span>${habit.completion_count}/${habit.total_days} days</span>
+                ${streakHtml}
+              </div>
+            </div>
+          </div>
+          <i class="${eyeIcon} flex-shrink-0"></i>
+        </div>
+      `
+    }).join('')
+  }
+
+  // Monthly stats updates
+  updateMonthlyStats(stats) {
+    if (!stats) return
+
+    this.updateElement('stat-completion-rate', `${stats.completion_rate}%`)
+    this.updateElement('stat-best-streak', stats.best_streak)
+    this.updateElement('stat-total-habits', stats.total_habits)
+  }
+
+  // Month change handler
+  handleMonthChange(dateInfo) {
+    const newDate = dateInfo.view.currentStart
+    this.yearValue = newDate.getFullYear()
+    this.monthValue = newDate.getMonth()
+    this.habits = []
+    this.calendarTarget.querySelectorAll('.habit-dots-container').forEach(el => el.remove())
+    this.loadHabitData()
+  }
+
+  // Utilities
+  formatDate(date) {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+  }
+
+  isCurrentMonth(date) {
+    return date.getMonth() === this.calendar.getDate().getMonth()
+  }
+
+  updateElement(id, text) {
+    const el = document.getElementById(id)
+    if (el) el.textContent = text
+  }
+
+  escape(text) {
     const div = document.createElement('div')
     div.textContent = text
     return div.innerHTML
   }
 
-  handleMonthChange(dateInfo) {
-    // Calendar month changed - reload data
-    const newDate = dateInfo.view.currentStart
-    this.yearValue = newDate.getFullYear()
-    this.monthValue = newDate.getMonth()
-
-    console.log(`Month changed to: ${this.yearValue}-${this.monthValue + 1}`)
-
-    // Clear habits data to prevent showing old data on new month
-    this.habits = []
-
-    // Clear all existing dots immediately
-    const allDots = this.calendarTarget.querySelectorAll('.habit-dots-container')
-    allDots.forEach(dot => dot.remove())
-
-    // Load new data (which will call refreshHabitDots when complete)
-    this.loadHabitData()
-  }
-
-  // Public methods for external controls
-  goToToday() {
-    this.calendar.today()
-  }
-
-  previousMonth() {
-    this.calendar.prev()
-  }
-
-  nextMonth() {
-    this.calendar.next()
-  }
+  // Public API
+  goToToday() { this.calendar.today() }
+  previousMonth() { this.calendar.prev() }
+  nextMonth() { this.calendar.next() }
 }

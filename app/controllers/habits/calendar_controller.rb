@@ -29,7 +29,7 @@ class Habits::CalendarController < ApplicationController
   end
 
   def fetch_habits
-    current_user.habit_items.habit.where(archived_at: nil).includes(:logs).order(:position)
+    current_user.habit_items.habit.where(archived_at: nil).where("habits_items.created_at <= ?", @end_date.end_of_day).includes(:logs).order(:position)
   end
 
   def calculate_monthly_stats
@@ -61,14 +61,22 @@ class Habits::CalendarController < ApplicationController
 
   def serialize_habits
     @habits.map do |habit|
-      completion_dates = habit.logs.where(log_date: @start_date..@end_date).where(status: :complete).pluck(:log_date)
+      # Get all logs for this habit in the date range
+      logs = habit.logs.where(log_date: @start_date..@end_date)
+
+      # Group by status
+      completed_dates = logs.where(status: :complete).pluck(:log_date).map(&:to_s)
+      skipped_dates = logs.where(status: :skipped).pluck(:log_date).map(&:to_s)
+      draft_dates = logs.where(status: :draft).pluck(:log_date).map(&:to_s)
 
       {
         id: habit.id,
         name: habit.name,
         color: generate_color_for_habit(habit),
-        completions: completion_dates.map(&:to_s), # Send full dates as ISO strings (YYYY-MM-DD)
-        completion_count: completion_dates.count,
+        completions: completed_dates, # Keep for backward compatibility with dots
+        skipped: skipped_dates,
+        drafts: draft_dates,
+        completion_count: completed_dates.count,
         total_days: @end_date.day,
         current_streak: habit.current_streak,
         longest_streak: habit.longest_streak

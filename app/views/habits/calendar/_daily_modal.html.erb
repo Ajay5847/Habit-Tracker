@@ -15,27 +15,34 @@
     <div class="space-y-4">
       <!-- Completed Habits -->
       <div>
-        <h4 class="font-medium text-text-primary mb-2">Completed Habits</h4>
+        <h4 class="font-medium text-text-primary mb-2 flex items-center gap-2">
+          <i class="fas fa-check-circle text-success-600"></i>
+          Completed
+        </h4>
         <div id="modal-completed-habits" class="space-y-2">
           <!-- Will be populated by JavaScript -->
         </div>
       </div>
       
-      <!-- Missed Habits -->
+      <!-- Skipped Habits -->
       <div>
-        <h4 class="font-medium text-text-primary mb-2">Missed Opportunities</h4>
-        <div id="modal-missed-habits" class="space-y-2">
+        <h4 class="font-medium text-text-primary mb-2 flex items-center gap-2">
+          <i class="fas fa-ban text-warning-600"></i>
+          Skipped
+        </h4>
+        <div id="modal-skipped-habits" class="space-y-2">
           <!-- Will be populated by JavaScript -->
         </div>
       </div>
       
-      <!-- Daily Reflection Placeholder -->
-      <div>
-        <h4 class="font-medium text-text-primary mb-2">Daily Reflection</h4>
-        <div class="p-3 bg-gray-50 rounded-lg">
-          <p class="text-sm text-text-secondary italic">
-            Reflection feature coming soon...
-          </p>
+      <!-- Not Logged Habits (only visible for today) -->
+      <div id="modal-not-logged-section">
+        <h4 class="font-medium text-text-primary mb-2 flex items-center gap-2">
+          <i class="fas fa-circle text-gray-400"></i>
+          Not Logged
+        </h4>
+        <div id="modal-not-logged-habits" class="space-y-2">
+          <!-- Will be populated by JavaScript -->
         </div>
       </div>
     </div>

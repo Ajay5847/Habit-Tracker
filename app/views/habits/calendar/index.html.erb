@@ -1,33 +1,30 @@
 <div class="bg-gradient-to-br from-primary-50 via-background to-secondary-50 min-h-screen">
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="grid lg:grid-cols-4 gap-8">
-      
-      <!-- Calendar Section -->
-      <div class="lg:col-span-3 space-y-6"  data-controller="fullcalendar" data-fullcalendar-year-value="<%= @year %>" data-fullcalendar-month-value="<%= @month - 1 %>">
-        <!-- Header -->
-        <div class="bg-white rounded-2xl shadow-soft p-6">
-          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 class="text-fluid-2xl font-semibold text-text-primary">Calendar Overview</h1>
-              <p class="text-text-secondary mt-1">Track your habit completions across the month</p>
-            </div>
-          </div>
+    <!-- Monthly Summary at Top -->
+    <div class="mb-6">
+      <%= render 'habits/calendar/monthly_summary' %>
+    </div>
+    <!-- Header -->
+    <div class="bg-white rounded-2xl shadow-soft p-6 mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 class="text-fluid-2xl font-semibold text-text-primary">Calendar Overview</h1>
+          <p class="text-text-secondary mt-1">Track your habit completions across the month</p>
         </div>
-
+      </div>
+    </div>
+    <div class="grid lg:grid-cols-4 gap-8">
+      <!-- Calendar Section -->
+      <div class="lg:col-span-3 space-y-6" data-controller="fullcalendar" data-fullcalendar-year-value="<%= @year %>" data-fullcalendar-month-value="<%= @month - 1 %>">
         <!-- FullCalendar Container -->
         <div class="bg-white rounded-2xl shadow-soft p-6">
           <div data-fullcalendar-target="calendar"></div>
         </div>
-
-        <!-- Monthly Summary -->
-        <%= render 'habits/calendar/monthly_summary' %>
       </div>
 
       <!-- Sidebar -->
       <div class="lg:col-span-1 space-y-6">
         <%= render 'habits/calendar/habit_legend' %>
-        <%= render 'habits/calendar/quick_actions' %>
-        <%= render 'habits/calendar/recent_achievements' %>
       </div>
     </div>
   </main>
