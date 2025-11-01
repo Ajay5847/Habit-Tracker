@@ -95,14 +95,14 @@ production:
     url: <%= ENV["SUPABASE_PRODUCTION_DATABASE_URL"] %>
     migrations_paths: db/migrate
   cache:
-    <<: *default
-    url: <%= ENV["SUPABASE_PRODUCTION_DATABASE_URL"] %>
+    <<: *sqlite
+    database: storage/habit_tracker_production_cache.sqlite3
     migrations_paths: db/cache_migrate
   queue:
-    <<: *default
-    url: <%= ENV["SUPABASE_PRODUCTION_DATABASE_URL"] %>
+    <<: *sqlite
+    database: storage/habit_tracker_production_queue.sqlite3
     migrations_paths: db/queue_migrate
   cable:
-    <<: *default
-    url: <%= ENV["SUPABASE_PRODUCTION_DATABASE_URL"] %>
+    <<: *sqlite
+    database: storage/habit_tracker_production_cable.sqlite3
     migrations_paths: db/cable_migrate
