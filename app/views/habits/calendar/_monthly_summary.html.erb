@@ -1,0 +1,47 @@
+<!-- Monthly Summary Component with Alpine.js for reactive stats -->
+<div x-data="{ 
+       stats: { completion_rate: 0, best_streak: 0, total_habits: 0 }
+     }"
+     @fullcalendar:stats-loaded.window="stats = $event.detail"
+     class="bg-white rounded-2xl shadow-soft p-6">
+  <h3 class="text-lg font-semibold text-text-primary mb-4">Monthly Summary</h3>
+  <div class="grid sm:grid-cols-3 gap-4">
+    <div class="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-primary-700 font-medium">Completion Rate</p>
+          <p class="text-2xl font-bold text-primary-800" x-text="stats.completion_rate + '%'">0%</p>
+        </div>
+        <div class="w-12 h-12 bg-primary-200 rounded-full flex items-center justify-center">
+          <i class="fas fa-chart-line text-primary-700"></i>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bg-gradient-to-br from-accent-50 to-accent-100 rounded-xl p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-accent-700 font-medium">Best Streak</p>
+          <p class="text-2xl font-bold text-accent-800">
+            <span x-text="stats.best_streak">0</span> days
+          </p>
+        </div>
+        <div class="w-12 h-12 bg-accent-200 rounded-full flex items-center justify-center">
+          <i class="fas fa-fire text-accent-700"></i>
+        </div>
+      </div>
+    </div>
+    
+    <div class="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-xl p-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-secondary-700 font-medium">Total Habits</p>
+          <p class="text-2xl font-bold text-secondary-800" x-text="stats.total_habits">0</p>
+        </div>
+        <div class="w-12 h-12 bg-secondary-200 rounded-full flex items-center justify-center">
+          <i class="fas fa-list-check text-secondary-700"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

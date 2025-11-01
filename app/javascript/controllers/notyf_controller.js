@@ -40,7 +40,7 @@ export default class extends Controller {
 
     const notyfData = {
       message: this.element.innerHTML,
-      dismissible: true,
+      dismissible: false,
     };
 
     notyfData.type = this.errorValue ? "error" : "success";

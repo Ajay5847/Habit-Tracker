@@ -1,0 +1,60 @@
+<!-- Daily Detail Modal (controlled by fullcalendar_controller.js) -->
+<div id="calendar-daily-modal"
+     class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  
+  <div class="bg-white rounded-2xl p-6 max-w-md w-full animate-fade-in">
+    
+    <div class="flex items-center justify-between mb-4">
+      <h3 id="modal-date-string" class="text-lg font-semibold text-text-primary"></h3>
+      <button id="modal-close-btn" 
+              class="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+        <i class="fas fa-times text-text-secondary"></i>
+      </button>
+    </div>
+    
+    <div class="space-y-4">
+      <!-- Completed Habits -->
+      <div>
+        <h4 class="font-medium text-text-primary mb-2">Completed Habits</h4>
+        <div id="modal-completed-habits" class="space-y-2">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+      
+      <!-- Missed Habits -->
+      <div>
+        <h4 class="font-medium text-text-primary mb-2">Missed Opportunities</h4>
+        <div id="modal-missed-habits" class="space-y-2">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+      
+      <!-- Daily Reflection Placeholder -->
+      <div>
+        <h4 class="font-medium text-text-primary mb-2">Daily Reflection</h4>
+        <div class="p-3 bg-gray-50 rounded-lg">
+          <p class="text-sm text-text-secondary italic">
+            Reflection feature coming soon...
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+</style>

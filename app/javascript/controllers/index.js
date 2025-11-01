@@ -18,3 +18,6 @@ application.register("slideover", SlideoverController)
 
 import TomSelectController from "./tom_select_controller"
 application.register("tom-select", TomSelectController)
+
+import FullCalendarController from "./fullcalendar_controller"
+application.register("fullcalendar", FullCalendarController)
