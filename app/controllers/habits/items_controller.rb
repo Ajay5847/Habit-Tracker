@@ -7,7 +7,7 @@ class Habits::ItemsController < ApplicationController
       @list = Habits::List.find(params[:list_id])
       @items = @list.items
     else
-      @items = current_user.habit_items.includes(:list, :tags)
+      @items = current_user.habit_items.includes(:list, :tags).order(created_at: :desc)
     end
   end
 

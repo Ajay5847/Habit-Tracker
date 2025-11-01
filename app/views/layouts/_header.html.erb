@@ -11,7 +11,7 @@
       <div class="hidden md:flex items-center gap-6">
         <%= link_to "Dashboard", root_path, class: "px-4 py-2 rounded-lg text-text-secondary hover:text-primary-600 hover:bg-primary-50 transition-all duration-200" %>
         <%= link_to "Habits", habits_items_path, class: "px-4 py-2 rounded-lg text-text-secondary hover:text-primary-600 hover:bg-primary-50 transition-all duration-200" %>
-        <a href="#" class="px-4 py-2 rounded-lg text-text-secondary hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">Calendar</a>
+        <%= link_to "Calendar", habits_calendar_index_path, class: "px-4 py-2 rounded-lg text-text-secondary hover:text-primary-600 hover:bg-primary-50 transition-all duration-200" %>
       </div>
       
       <!-- User Actions -->
@@ -35,8 +35,8 @@
   <div x-show="open" class="md:hidden bg-white border-t border-soft" x-cloak>
     <div class="px-4 py-3 space-y-3">
       <%= link_to "Dashboard", root_path, class: "block text-text-secondary hover:text-primary-600 transition-colors duration-200" %>
-      <a href="#" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Habits</a>
-      <a href="#" class="block text-text-secondary hover:text-primary-600 transition-colors duration-200">Calendar</a>
+      <%= link_to "Habits", habits_items_path, class: "block text-text-secondary hover:text-primary-600 transition-colors duration-200" %>
+      <%= link_to "Calendar", habits_calendar_index_path, class: "block text-text-secondary hover:text-primary-600 transition-colors duration-200" %>
       <% if user_signed_in? %>
         <%= link_to destroy_user_session_path, method: :delete, class: "flex items-center text-text-secondary hover:text-red-600 transition-colors duration-200 mt-2", data: { turbo_method: :delete } do %>
           <i class="fas fa-sign-out-alt mr-2"></i>
