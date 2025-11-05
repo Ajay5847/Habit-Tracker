@@ -1,23 +1,23 @@
-<% if turbo_native_app? %>
+<% if user_signed_in? && turbo_native_app? %>
   <!-- Floating Action Button for New Habit -->
-  <%= link_to new_habits_item_path, class: "fixed bottom-20 right-6 bg-primary-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg z-50" do %>
+  <%= link_to habits_items_path, class: "fixed bottom-20 right-6 bg-primary-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg z-50" do %>
     <i class="fas fa-plus text-2xl"></i>
   <% end %>
   
   <!-- Bottom Navigation -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg z-40">
     <div class="flex justify-around items-center h-16">
-      <%= link_to root_path, class: "flex flex-col items-center justify-center flex-1 py-2 #{current_page?(root_path) ? 'text-primary-600' : 'text-gray-600'}" do %>
+      <%= link_to root_path, class: "flex flex-col items-center justify-center flex-1 py-2 text-gray-600" do %>
         <i class="fas fa-home text-xl mb-1"></i>
         <span class="text-xs">Dashboard</span>
       <% end %>
       
-      <%= link_to habits_items_path, class: "flex flex-col items-center justify-center flex-1 py-2 #{current_page?(habits_items_path) ? 'text-primary-600' : 'text-gray-600'}" do %>
+      <%= link_to habits_items_path, class: "flex flex-col items-center justify-center flex-1 py-2 text-gray-600" do %>
         <i class="fas fa-list text-xl mb-1"></i>
         <span class="text-xs">Habits</span>
       <% end %>
       
-      <%= link_to habits_calendar_index_path, class: "flex flex-col items-center justify-center flex-1 py-2 #{current_page?(habits_calendar_index_path) ? 'text-primary-600' : 'text-gray-600'}" do %>
+      <%= link_to habits_calendar_index_path, class: "flex flex-col items-center justify-center flex-1 py-2 text-gray-600" do %>
         <i class="fas fa-calendar text-xl mb-1"></i>
         <span class="text-xs">Calendar</span>
       <% end %>
