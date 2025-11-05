@@ -33,7 +33,9 @@
   </head>
 
   <body class="bg-gray-50 text-text-primary min-h-screen flex flex-col">
-    <%= render "layouts/header" %>
+    <% unless turbo_native_app? %>
+      <%= render "layouts/header" %>
+    <% end %>
     <div class="grow flex flex-row-reverse overflow-hidden">
       <div class="grow overflow-y-auto scroller">
         <%= yield %>
