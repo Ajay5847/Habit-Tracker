@@ -41,6 +41,7 @@
         <%= yield %>
       </div>
     </div>
+    <%= render "shared/bottom_nav" %>
     <%= turbo_frame_tag 'flash_messages', class: 'hidden' do %>
       <div data-controller="notyf"></div>
       <% flash.each do |type, message| %>
