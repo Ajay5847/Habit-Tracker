@@ -4,6 +4,30 @@
 
 import { application } from "./application"
 
+import Bridge__ButtonController from "./bridge/button_controller"
+application.register("bridge--button", Bridge__ButtonController)
+
+import Bridge__FormController from "./bridge/form_controller"
+application.register("bridge--form", Bridge__FormController)
+
+import Bridge__MenuController from "./bridge/menu_controller"
+application.register("bridge--menu", Bridge__MenuController)
+
+import Bridge__NavController from "./bridge/nav_controller"
+application.register("bridge--nav", Bridge__NavController)
+
+import Bridge__OverflowMenuController from "./bridge/overflow_menu_controller"
+application.register("bridge--overflow-menu", Bridge__OverflowMenuController)
+
+import Bridge__ReviewPromptController from "./bridge/review_prompt_controller"
+application.register("bridge--review-prompt", Bridge__ReviewPromptController)
+
+import ButtonController from "./button_controller"
+application.register("button", ButtonController)
+
+import FullcalendarController from "./fullcalendar_controller"
+application.register("fullcalendar", FullcalendarController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 
@@ -18,6 +42,3 @@ application.register("slideover", SlideoverController)
 
 import TomSelectController from "./tom_select_controller"
 application.register("tom-select", TomSelectController)
-
-import FullCalendarController from "./fullcalendar_controller"
-application.register("fullcalendar", FullCalendarController)
