@@ -1,0 +1,4 @@
+[data-bridge-components~="menu"]
+[data-controller~="bridge--menu"] {
+  display: none;
+}

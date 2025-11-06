@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html <%= platform_identifier %>>
   <head>
-    <title><%= content_for(:title) || "Habit Tracker" %></title>
+    <title><%= page_title %></title>
     <meta name="description" content="Habit Tracker helps you create and track your daily habits to build consistency and reach your goals.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="index, follow">
@@ -26,6 +26,7 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>

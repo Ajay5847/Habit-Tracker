@@ -1,3 +1,5 @@
+<% content_for :hotwire_native_title, "Login" %>
+
 <main class="bg-gray-100 flex-1 flex items-center justify-center px-4 py-8 sm:py-12" x-data="{ tabs: { login: 1, register: 2, recover: 3 }, tab: 1, showLoginPassword: false, showRegisterPassword: false }">
   <div class="max-w-6xl mx-auto w-full">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -87,8 +89,12 @@
             </div>
             <div class="flex items-center justify-between">
               <label class="flex items-center space-x-2">
-                <%= f.check_box :remember_me, class: "w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" %>
-                <span class="text-sm text-text-secondary">Remember me</span>
+                <% if turbo_native_app? %>
+                  <%= f.hidden_field :remember_me, value: true %>
+                <% else %>
+                  <%= f.check_box :remember_me, class: "w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500" %>
+                  <span class="text-sm text-text-secondary">Remember me</span>
+                <% end %>
               </label>
               <%= link_to "Forgot password?", new_password_path(:user), class: "text-sm text-primary-600 hover:text-primary-700 transition-colors duration-200", "@click.prevent": "tab = tabs.recover" %>
             </div>

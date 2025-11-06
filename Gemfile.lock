@@ -89,6 +89,7 @@ GEM
       msgpack (~> 1.2)
     brakeman (7.1.0)
       racc
+    browser (6.2.0)
     builder (3.3.0)
     bullet (8.0.8)
       activesupport (>= 3.0.0)
@@ -144,6 +145,7 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
+    hotwire_native_rails (0.4.4)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.2.2)
@@ -441,6 +443,7 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bootsnap
   brakeman
+  browser (~> 6.2)
   bullet
   capybara
   cssbundling-rails
@@ -449,6 +452,7 @@ DEPENDENCIES
   dotenv-rails
   faker
   foreman
+  hotwire_native_rails (~> 0.4.4)
   jbuilder
   jsbundling-rails
   kamal

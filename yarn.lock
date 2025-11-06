@@ -171,6 +171,11 @@
   resolved "https://registry.yarnpkg.com/@fullcalendar/interaction/-/interaction-6.1.19.tgz#48d85601a4203ede7cb400323fe5a9c163e28804"
   integrity sha512-GOciy79xe8JMVp+1evAU3ytdwN/7tv35t5i1vFkifiuWcQMLC/JnLg/RA2s4sYmQwoYhTw/p4GLcP0gO5B3X5w==
 
+"@hotwired/hotwire-native-bridge@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@hotwired/hotwire-native-bridge/-/hotwire-native-bridge-1.2.2.tgz#5487076925ac970de16a3db68151b966fbdda3d3"
+  integrity sha512-P74kFtXjpY1wV/YneZBOrWJmddLGiKBRj73JB1UgUEOfsM69xpGJbwY0sotFyJgevs2YrBgP9yDNw/uEica2VQ==
+
 "@hotwired/stimulus@^3.2.2":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.2.tgz#071aab59c600fed95b97939e605ff261a4251608"
