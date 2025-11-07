@@ -201,6 +201,11 @@
   dependencies:
     minipass "^7.0.4"
 
+"@joemasilotti/bridge-components@^0.11.1":
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/@joemasilotti/bridge-components/-/bridge-components-0.11.1.tgz#8020708b1dfb3a8bc7d9b6b64fccdf3fde719396"
+  integrity sha512-CG4wB7z/sY82zNdxAYI6VPSLBim2F7VY3dc7eqji4wj7JKCTVX2npCRTfYJbJuv3L5W5qTd7DkWDKzrCBFNfJA==
+
 "@jridgewell/gen-mapping@^0.3.5":
   version "0.3.13"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz#6342a19f44347518c93e43b1ac69deb3c4656a1f"
