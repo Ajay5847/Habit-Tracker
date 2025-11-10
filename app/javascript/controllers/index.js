@@ -4,9 +4,6 @@
 
 import { application } from "./application"
 
-import ButtonController from "./button_controller"
-application.register("button", ButtonController)
-
 import FullcalendarController from "./fullcalendar_controller"
 application.register("fullcalendar", FullcalendarController)
 

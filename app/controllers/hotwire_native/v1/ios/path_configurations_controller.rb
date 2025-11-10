@@ -3,55 +3,56 @@ class HotwireNative::V1::Ios::PathConfigurationsController < ActionController::B
     render json:
       {
         "settings": {
-          "enable_feature_x": true
+          "version": "v1"
         },
         "rules": [
           {
             "patterns": [
-              "/new$",
-              "/edit$",
-              "/signin$",
-              "/strada-form$"
-            ],
-            "properties": {
-              "context": "modal",
-              "pull_to_refresh_enabled": false
-            }
-          },
-          {
-            "patterns": [
-              "^/users/edit$"
+              ".*"
             ],
             "properties": {
               "context": "default",
+              "uri": "hotwire://controller/web",
               "pull_to_refresh_enabled": true
             }
           },
           {
             "patterns": [
-              "/numbers$"
+              "/habits/lists/\\d+/items/\\d+$",
+              "/habits/lists/\\d+/items$",
+              "/habits/lists/\\d+$"
             ],
             "properties": {
-              "view_controller": "numbers"
+              "context": "default",
+              "uri": "hotwire://controller/web",
+              "presentation": "push",
+              "pull_to_refresh_enabled": true
             }
           },
           {
             "patterns": [
-              "/numbers/[0-9]+$"
+              "/users/sign_in$",
+              "/users/sign_up$",
+              "/users/passwords/.*$"
             ],
             "properties": {
-              "view_controller": "numbers_detail",
-              "context": "modal"
+              "context": "default",
+              "uri": "hotwire://controller/web",
+              "presentation": "replace_root",
+              "pull_to_refresh_enabled": true
             }
           },
           {
             "patterns": [
-              "^/$"
+              "/jobs/.*$"
             ],
             "properties": {
-              "presentation": "replace_root"
+              "context": "default",
+              "uri": "hotwire://controller/external",
+              "presentation": "external",
+              "pull_to_refresh_enabled": false
             }
-          },
+          }
         ]
       }
   end

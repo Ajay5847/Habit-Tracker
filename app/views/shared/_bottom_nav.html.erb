@@ -21,15 +21,23 @@
         <i class="fas fa-calendar text-xl mb-1"></i>
         <span class="text-xs">Calendar</span>
       <% end %>
-      <%= link_to "Button", "#", data: {
-        controller: "bridge--button"
-      } %>
-      <a href="<%= destroy_user_session_path %>"
-        data-method="delete"
-        data-controller="button"
-        data-bridge-title="Logout">
-        Logout
-      </a>
+
+      <div data-controller="bridge--menu">
+          <%= link_to(
+                destroy_user_session_path,
+                method: :delete,
+                data: {
+                  turbo_method: :delete,
+                  bridge__menu_target: "item",
+                  bridge_title: "Log out",
+                },
+                class: "flex items-center px-4 py-2 rounded-lg text-text-secondary hover:text-red-600 hover:bg-red-50 transition-all duration-200"
+              ) do %>
+            <i class="fas fa-sign-out-alt mr-2"></i>
+            <span>Logout</span>
+          <% end %>
+        </div>
+
     </div>
   </nav>
   <style>
