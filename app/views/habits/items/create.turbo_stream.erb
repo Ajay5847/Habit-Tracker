@@ -4,7 +4,7 @@
     <%= render "habits/items/empty_state", empty_habits: false %>
   <% end %>
   <%= turbo_stream.append("flash_messages", partial: "shared/flash_message", locals: { type: "notice", message: "Habit item was successfully created." }) %>
-  <% close_slideover %>
+  <% clode_modal %>
 <% else %>
   <%= turbo_stream.replace 'habits_item_form', render('form', item: @item) %>
 <% end %>

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "notyf/notyf.min.css";
 @import 'tom-select/dist/css/tom-select.css';
-@import "./components/_slideover.css";
+@import "./components/_modal.css";
 @import "./components/_select2.css";
 @import "./components/_fullcalendar_custom.css";
 @import "./components/_native.css"

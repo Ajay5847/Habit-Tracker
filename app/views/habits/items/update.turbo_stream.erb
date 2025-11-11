@@ -3,7 +3,7 @@
     <%= render partial: "habits/items/habit_list_card", locals: { item: @item } %>
   <% end %>
   <%= turbo_stream.append("flash_messages", partial: "shared/flash_message", locals: { type: "notice", message: "Habit item was successfully updated." }) %>
-  <% close_slideover %>
+  <% clode_modal %>
 <% else %>
   <%= turbo_stream.replace 'habits_item_form', render('form', item: @item) %>
 <% end %>

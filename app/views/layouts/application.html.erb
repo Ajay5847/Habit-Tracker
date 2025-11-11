@@ -37,8 +37,8 @@
     <% unless turbo_native_app? %>
       <%= render "layouts/header" %>
     <% end %>
-    <div class="grow flex flex-row-reverse overflow-hidden">
-      <div class="grow overflow-y-auto scroller">
+    <div class="grow flex overflow-hidden">
+      <div class="grow overflow-y-auto">
         <%= yield %>
       </div>
     </div>
@@ -48,11 +48,10 @@
       <% flash.each do |type, message| %>
         <% type = type.to_s %>
         <% next if flash[type].blank? %>
-        <% next unless type.starts_with?('notyf_') %>
         <%= render 'shared/flash_message', type: %w[alert error].include?(type.gsub(/^notyf_/, '')) ? 'alert' : 'notice', message: message %>
       <% end %>
     <% end %>
-    <%= render 'shared/slideover' %>
-    <%= turbo_frame_tag 'slideover-content', class: 'hidden' %>
+    <%= render 'shared/modal' %>
+    <%= turbo_frame_tag 'modal-content', class: 'hidden' %>
   </body>
 </html>

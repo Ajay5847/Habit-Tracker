@@ -10,6 +10,6 @@
         } %>
 <% end %>
 
-<% if content_for?(:slideover_content) %>
-  <%= turbo_stream.update "slideover-content", content_for(:slideover_content) %>
+<% if content_for?(:modal_content) %>
+  <%= turbo_stream.update "modal-content", content_for(:modal_content) %>
 <% end %>

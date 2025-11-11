@@ -13,11 +13,11 @@ application.register("hello", HelloController)
 import NotyfController from "./notyf_controller"
 application.register("notyf", NotyfController)
 
-import SlideoverContentController from "./slideover_content_controller"
-application.register("slideover-content", SlideoverContentController)
+import ModalContentController from "./modal_content_controller"
+application.register("modal-content", ModalContentController)
 
-import SlideoverController from "./slideover_controller"
-application.register("slideover", SlideoverController)
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
 
 import TomSelectController from "./tom_select_controller"
 application.register("tom-select", TomSelectController)

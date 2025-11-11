@@ -8,21 +8,21 @@ export default class extends Controller {
   };
 
   connect() {
-    const slideoverController =
+    const modalController =
       this.application.getControllerForElementAndIdentifier(
-        document.querySelector('[data-controller="slideover"]'),
-        "slideover"
+        document.querySelector('[data-controller="modal"]'),
+        "modal"
       );
     if (this.element.innerHTML?.trim()) {
-      slideoverController.populate(
+      modalController.populate(
         this.titleValue,
         this.element.innerHTML,
         this.tabsValue,
         this.headericonValue
       );
-      slideoverController.open();
+      modalController.open();
     } else {
-      slideoverController.close();
+      modalController.close();
     }
 
     setTimeout(this.remove.bind(this), 1000);

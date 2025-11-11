@@ -1,0 +1,7 @@
+<div 
+  data-controller="modal-content" 
+  data-modal-content-headericon-value="<%= local_assigns[:headericon] %>"
+  data-modal-content-tabs-value="<%= local_assigns[:tabs].to_json %>"
+  data-modal-content-title-value="<%= local_assigns[:title] %>">
+  <%= yield %>
+</div>

@@ -3,7 +3,7 @@ import { enter, leave } from "el-transition";
 
 export default class extends Controller {
   static targets = [
-    "slideover",
+    "modal",
     "overlay",
     "panel",
     "title",
@@ -39,8 +39,8 @@ export default class extends Controller {
         const link = document.createElement("a");
         link.href = tab.href;
         link.innerHTML = tab.text;
-        link.classList.add("slideover-tabs-tab");
-        if (tab.active) link.classList.add("slideover-tabs-tab--active");
+        link.classList.add("modal-tabs-tab");
+        if (tab.active) link.classList.add("modal-tabs-tab--active");
         link.dataset.method = "get";
         link.dataset.controller = "turbo-hack";
         this.tabsTarget.insertAdjacentElement("beforeEnd", link);
@@ -58,7 +58,7 @@ export default class extends Controller {
 
     document.querySelector("body").style.overflowY = "hidden";
 
-    window.closeSlideover = this.close.bind(this);
+    window.closeModal = this.close.bind(this);
 
     this.opened = true;
   }
@@ -71,7 +71,7 @@ export default class extends Controller {
 
     document.querySelector("body").style.overflowY = "auto";
 
-    this.slideoverTarget.scrollTop = 0;
+    this.modalTarget.scrollTop = 0;
 
     setTimeout(this.hide.bind(this), 1000);
 

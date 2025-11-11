@@ -1,10 +1,10 @@
-<div class="fixed inset-0 hidden z-[9999]" aria-labelledby="modal-title" aria-modal="true" data-controller="slideover" role="dialog">
+<div class="fixed inset-0 hidden z-[9999]" aria-labelledby="modal-title" aria-modal="true" data-controller="modal" role="dialog">
   <div class="absolute inset-0 overflow-hidden">
     <!-- Overlay -->
     <div
       class="absolute inset-0 bg-black/60 transition-opacity z-0"
       aria-hidden="true"
-      data-slideover-target="overlay"
+      data-modal-target="overlay"
       data-transition-enter="ease-out duration-300"
       data-transition-enter-start="opacity-0"
       data-transition-enter-end="opacity-100"
@@ -17,7 +17,7 @@
     <div class="fixed inset-0 flex items-center justify-center z-10 p-4">
       <div
         class="bg-white w-full max-w-xl rounded-xl shadow-xl transform transition-all overflow-hidden"
-        data-slideover-target="panel"
+        data-modal-target="panel"
         data-transition-enter="ease-out duration-300"
         data-transition-enter-start="opacity-0 scale-95"
         data-transition-enter-end="opacity-100 scale-100"
@@ -25,25 +25,25 @@
         data-transition-leave-start="opacity-100 scale-100"
         data-transition-leave-end="opacity-0 scale-95">
         
-        <div class="slideover-pane" data-slideover-target="slideover">
+        <div class="modal-pane" data-modal-target="modal">
           <!-- Header -->
-          <div class="slideover-header border-b px-6 py-4">
+          <div class="modal-header border-b px-6 py-4">
             <div class="flex items-center justify-between">
-              <div class="slideover-title flex items-center gap-2">
-                <i data-slideover-target="headericon"></i>
-                <h2 class="truncate font-semibold text-lg" data-slideover-target="title"></h2>
+              <div class="modal-title flex items-center gap-2">
+                <i data-modal-target="headericon"></i>
+                <h2 class="truncate font-semibold text-lg" data-modal-target="title"></h2>
               </div>
-              <button class="modal-close text-gray-500 hover:text-gray-700" data-action="slideover#close">
+              <button class="modal-close text-gray-500 hover:text-gray-700" data-action="modal#close">
                 <i class="fa-solid fa-xmark text-xl"></i>
               </button>
             </div>
           </div>
 
           <!-- Tabs (optional) -->
-          <div class="slideover-tabs px-6 py-2" data-slideover-target="tabs"></div>
+          <div class="modal-tabs px-6 py-2" data-modal-target="tabs"></div>
 
           <!-- Body -->
-          <div class="slideover-body px-6 py-4" data-slideover-target="body"></div>
+          <div class="modal-body px-6 py-4" data-modal-target="body"></div>
         </div>
       </div>
     </div>
